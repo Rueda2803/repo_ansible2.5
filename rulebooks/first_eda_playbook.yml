@@ -2,10 +2,10 @@
 - name: Check if the nginx config file is modified 
   hosts: Laboratorio  
   sources:
-    - name: file_watch
-      ansible.eda.file_watch:
-        path: /etc/nginx/nginx.conf
-        recursive: true
+    - ansible.eda.url_check:
+        urls:
+          - http://192.168.3.2:8080
+        delay: 30
   rules:
     - name: Run the action if the /usr/local/etc/nginx/nginx.conf is modified
       condition: event.change == "modified"
