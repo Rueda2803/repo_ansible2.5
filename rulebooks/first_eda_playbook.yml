@@ -10,5 +10,6 @@
     - name: Run the action if the /usr/local/etc/nginx/nginx.conf is modified
       condition: event.change == "modified"
       action:
-        run_playbook:
-          name: hello.yml
+        run_job_template:
+          name: Plantilla_prueba
+          organization: Default
