@@ -8,7 +8,7 @@
       port: 5000
   rules:
   - name: Run the action if the /usr/local/etc/nginx/nginx.conf is modified
-    condition: event.url_check.status == "down"
+    condition: event.payload.message == "Cambios"
     action:
       run_job_template:
         name: Plantilla_monitoreo
