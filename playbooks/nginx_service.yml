@@ -34,5 +34,5 @@
 
     - name: Imprimir estado del servicio nginx
       ansible.builtin.debug:
-        msg: "El servicio nginx esta {{ nginx_status.services['nginx'].state }}"
+        msg: "El servicio nginx esta {{ nginx_status.services.nginx.service.status }}"
 
