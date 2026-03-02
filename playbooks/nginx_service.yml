@@ -10,3 +10,18 @@
     - name: Imprimir uso de /var
       ansible.builtin.debug:
         msg: "El uso de /var es {{ var_usage.stdout }}%"
+
+    - name: Eliminar archivos si /var esta lleno
+      find:
+        paths: "/var/lib/nginx/tmp/"
+        recurse: yes
+        file_type: file
+      register: archivos_encontrados
+      when: var_usage.stdout|int >= 90
+
+    - name: Borrar archivos encontrados
+      file:
+        path: "{{ item.path }}"
+        state: absent
+      loop: "{{ archivos_encontrados.files }}"
+      when: var_usage.stdout|int >= 90
