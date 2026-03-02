@@ -14,3 +14,11 @@
     - name: Mostrar espacio disponible en /var
       debug:
         msg: "Espacio disponible en /var: {{ var_mount.size_available }} bytes"
+
+    - name: Calcular porcentaje libre en /var
+      set_fact:
+        var_free_percent: "{{ (var_mount.size_available / var_mount.size_total * 100) | int }}"
+
+    - name: Mostrar porcentaje libre
+      debug:
+        msg: "Porcentaje libre en /var: {{ var_free_percent }}%"
