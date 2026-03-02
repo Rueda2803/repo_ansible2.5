@@ -1,0 +1,15 @@
+---
+- name: Check if the nginx config file is modified
+  hosts: Laboratorio
+  sources:
+  - name: Webhook Listener
+    ansible.eda.webhook:
+      host: 0.0.0.0
+      port: 5000
+  rules:
+  - name: Run the action if the /usr/local/etc/nginx/nginx.conf is modified
+    condition: event.url_check.status == "down"
+    action:
+      run_job_template:
+        name: Plantilla_monitoreo
+        organization: Default

@@ -1,8 +1,7 @@
 ---
-- name: Reiniciar servidor web
+- name: Hello World Playbook
   hosts: all
   tasks:
-  - name: Reiniciar nginx
-    systemd:
-      name: nginx
-      state: restarted
+    - name: Print Hello World
+      ansible.builtin.debug:
+        msg: "Hello, World!"

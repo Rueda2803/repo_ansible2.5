@@ -1,0 +1,8 @@
+---
+- name: Reiniciar servidor web
+  hosts: all
+  tasks:
+  - name: Reiniciar nginx
+    systemd:
+      name: nginx
+      state: restarted
