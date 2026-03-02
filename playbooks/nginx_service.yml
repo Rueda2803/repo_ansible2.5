@@ -1,8 +1,16 @@
 ---
-- name: Reiniciar servidor web
+- name: Validar espacio en /var y limpiar si esta lleno
   hosts: all
+  gather_facts: yes
+  vars:
+    ruta_a_limpiar: /var/log/mi_aplicacion
+    dias_antiguedad: 3
+
   tasks:
-  - name: Reiniciar nginx
-    systemd:
-      name: nginx
-      state: restarted
+    - name: Obtener informacion del mount /var
+      set_fact:
+        var_mount: "{{ ansible_mounts | selectattr('mount', 'equalto', '/var') | list | first }}"
+
+    - name: Mostrar espacio disponible en /var
+      debug:
+        msg: "Espacio disponible en /var: {{ var_mount.size_available }} bytes"
