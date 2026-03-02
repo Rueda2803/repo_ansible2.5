@@ -1,27 +1,37 @@
 ---
 - name: Validar espacio en /var y limpiar si esta lleno
   hosts: all
-  gather_facts: yes
+  gather_facts: true
   tasks:
-    - name: Verificar espacio en /var
-      ansible.builtin.shell: "df -h /var | tail -1 | awk '{print $5}' | sed 's/%//'"
-      register: var_usage
+    - name: Verificar servicio nginx
+      block:
+        - name: Verificar espacio en /var
+          ansible.builtin.shell: "df -h /var | tail -1 | awk '{print $5}' | sed 's/%//'"
+          register: var_usage
 
-    - name: Imprimir uso de /var
-      ansible.builtin.debug:
-        msg: "El uso de /var es {{ var_usage.stdout }}%"
+        - name: Imprimir uso de /var
+          ansible.builtin.debug:
+            msg: "El uso de /var es {{ var_usage.stdout }}%"
 
-    - name: Eliminar archivos si /var esta lleno
-      find:
-        paths: "/var/lib/nginx/tmp/"
-        recurse: yes
-        file_type: file
-      register: archivos_encontrados
-      when: var_usage.stdout|int >= 90
+        - name: Eliminar archivos si /var esta lleno
+          find:
+            paths: "/var/lib/nginx/tmp/"
+            recurse: yes
+            file_type: file
+          register: archivos_encontrados
+          when: var_usage.stdout|int >= 90
 
-    - name: Borrar archivos encontrados
-      file:
-        path: "{{ item.path }}"
-        state: absent
-      loop: "{{ archivos_encontrados.files }}"
-      when: var_usage.stdout|int >= 90
+        - name: Borrar archivos encontrados
+          file:
+            path: "{{ item.path }}"
+            state: absent
+          loop: "{{ archivos_encontrados.files }}"
+          when: var_usage.stdout|int >= 90
+      always:
+        - name: Reiniciar servicio nginx
+          ansible.builtin.service:
+            name: nginx
+            state: restarted   
+
+      
+      
