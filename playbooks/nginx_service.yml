@@ -9,10 +9,6 @@
           ansible.builtin.shell: "df -h /var | tail -1 | awk '{print $5}' | sed 's/%//'"
           register: var_usage
 
-        - name: Imprimir uso de /var
-          ansible.builtin.debug:
-            msg: "El uso de /var es {{ var_usage.stdout }}%"
-
         - name: Eliminar archivos si /var esta lleno
           find:
             paths: "/var/lib/nginx/tmp/"
@@ -32,6 +28,15 @@
           ansible.builtin.service:
             name: nginx
             state: restarted   
+
+        - name: mostrar mensaje de estado de nginx
+          ansible.builtin.debug:
+            msg: "El servicio nginx ha sido reiniciado"
+
+      rescue:
+        - name: Mostrar mensaje de error
+          ansible.builtin.debug:
+            msg: "Ocurrió un error al verificar el espacio en /var o al reiniciar nginx"
 
       
       
