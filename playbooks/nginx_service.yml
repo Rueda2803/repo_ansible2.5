@@ -2,23 +2,11 @@
 - name: Validar espacio en /var y limpiar si esta lleno
   hosts: all
   gather_facts: yes
-  vars:
-    ruta_a_limpiar: /var/log/mi_aplicacion
-    dias_antiguedad: 3
-
   tasks:
-    - name: Obtener informacion del mount /var
-      set_fact:
-        var_mount: "{{ ansible_mounts | selectattr('mount', 'equalto', '/var') | list | first }}"
+    - name: Verificar espacio en /var
+      ansible.builtin.shell: "df -h /var | tail -1 | awk '{print $5}' | sed 's/%//'"
+      register: var_usage
 
-    - name: Mostrar espacio disponible en /var
-      debug:
-        msg: "Espacio disponible en /var: {{ var_mount.size_available }} bytes"
-
-    - name: Calcular porcentaje libre en /var
-      set_fact:
-        var_free_percent: "{{ (var_mount.size_available / var_mount.size_total * 100) | int }}"
-
-    - name: Mostrar porcentaje libre
-      debug:
-        msg: "Porcentaje libre en /var: {{ var_free_percent }}%"
+    - name: Imprimir uso de /var
+      ansible.builtin.debug:
+        msg: "El uso de /var es {{ var_usage.stdout }}%"
