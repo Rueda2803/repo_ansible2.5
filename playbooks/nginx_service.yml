@@ -48,6 +48,7 @@
       ansible.builtin.fail:
         msg: "El servicio nginx no se reinicio correctamente"
       when: nginx_status.status.ActiveState != "active"
+      changed_when: True
       ignore_errors: true
       notify: 
       - Fallo en el reinicio
@@ -56,6 +57,7 @@
       ansible.builtin.debug:
         msg: "El servicio nginx se reinicio correctamente"
       when: nginx_status.status.ActiveState == "active"
+      changed_when: True
       ignore_errors: true
       notify: 
       - Reinicio exitoso
