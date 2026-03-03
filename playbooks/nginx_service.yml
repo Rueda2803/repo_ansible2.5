@@ -29,10 +29,11 @@
       ignore_errors: true
 
     - name: Verificar estado del servicio nginx
-      ansible.builtin.service_facts:
+      ansible.builtin.systemd:
+        name: nginx
       register: nginx_status
 
     - name: Imprimir estado del servicio nginx
       ansible.builtin.debug:
-        msg: "El servicio nginx esta {{ nginx_status.services.nginx.service.status }}"
+        msg: "El servicio nginx esta {{ nginx_status.status.ActiveState }}"
 
