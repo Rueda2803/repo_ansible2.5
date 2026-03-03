@@ -37,3 +37,8 @@
       ansible.builtin.debug:
         msg: "El servicio nginx esta {{ nginx_status.status.ActiveState }}"
 
+    - name: Informar que no se reinicio el servicio nginx
+      ansible.builtin.fail:
+        msg: "El servicio nginx no se reinicio porque el espacio en /var no esta lleno"
+      when: nginx_status.status.ActiveState != "active"
+
