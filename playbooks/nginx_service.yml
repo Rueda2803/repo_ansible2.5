@@ -49,14 +49,16 @@
         msg: "El servicio nginx no se reinicio correctamente"
       when: nginx_status.status.ActiveState != "active"
       ignore_errors: true
-      notify: Fallo en el reinicio
+      notify: 
+      - Fallo en el reinicio
 
     - name: Informar que se reinicio el servicio nginx
       ansible.builtin.debug:
         msg: "El servicio nginx se reinicio correctamente"
       when: nginx_status.status.ActiveState == "active"
       ignore_errors: true
-      notify: Reinicio exitoso
+      notify: 
+      - Reinicio exitoso
 
   handlers:
     - name: Reinicio exitoso
@@ -96,5 +98,5 @@
 
           A pesar de aplicar el procedimiento escrito arriba el servicio nginx no se encuentra funcionando correctamente y la pagina web no es accesible. Se recomienda revisar el servidor para identificar la causa del fallo.
       delegate_to: localhost
-      
+
         
