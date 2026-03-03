@@ -7,7 +7,7 @@
       ansible.builtin.shell: "df -h /var | tail -1 | awk '{print $5}' | sed 's/%//'"
       register: var_usage
 
-    - name: Eliminar archivos si /var esta lleno
+    - name: Buscar archivos en /var/lib/nginx/tmp/ si el espacio en /var es mayor o igual al 90%
       find:
           paths: "/var/lib/nginx/tmp/"
           recurse: yes
@@ -33,20 +33,6 @@
         name: nginx
       register: nginx_status
 
-    - name: Informar que no se reinicio el servicio nginx
-      ansible.builtin.fail:
-        msg: "El servicio nginx no se reinicio porque el espacio en /var no esta lleno"
-      when: nginx_status.status.ActiveState != "active"
-      ignore_errors: true
-#      notify: Anunciar Cambio de contraseña
-
-    - name: Informar que se reinicio el servicio nginx
-      ansible.builtin.debug:
-        msg: "El servicio nginx se reinicio correctamente"
-      when: nginx_status.status.ActiveState == "active"
-      ignore_errors: true
- #     notify: Reinicio exitoso
-
     - name: Consultar pagina web
       uri:
         url: "http://192.168.3.34:8080"
@@ -57,13 +43,58 @@
       register: resultado
       ignore_errors: true
 
-#  handlers:
-#    - name: Reinicio exitoso
-#      community.general.mail:
-#        host: 192.168.3.2
-#        port: 25
-#        to: "{{ email }}"
-#        from: Alan Rueda <alankewd@gmail.com>
-#        subject: "Habilitación y cambio de contraseña de usuario: "
-#        body: "Se ha habilitado y cambiado la contraseña de {{ ad_user }}, la contraseña temporal es: {{ temp_password }}. Debe cambiarla en su próximo inicio de sesión."
-#      delegate_to: localhost 
+
+    - name: Informar que no se reinicio el servicio nginx
+      ansible.builtin.fail:
+        msg: "El servicio nginx no se reinicio correctamente"
+      when: nginx_status.status.ActiveState != "active"
+      ignore_errors: true
+      notify: Fallo en el reinicio
+
+    - name: Informar que se reinicio el servicio nginx
+      ansible.builtin.debug:
+        msg: "El servicio nginx se reinicio correctamente"
+      when: nginx_status.status.ActiveState == "active"
+      ignore_errors: true
+      notify: Reinicio exitoso
+
+  handlers:
+    - name: Reinicio exitoso
+      community.general.mail:
+        host: 192.168.3.2
+        port: 25
+        to: "{{ email }}"
+        from: Alan Rueda <alankewd@gmail.com>
+        subject: "Correciones de servidor web exitosas"
+        body: |
+          El servicio nginx se reinicio correctamente y la pagina web es accesible.
+          
+          Se realizó el siguiente procedimiento:
+          1. Se verificó el espacio en /var el cual era de {{ var_usage.stdout }}% 
+          2. Se eliminaron {{ archivos_encontrados.matched }} archivos en /var/lib/nginx/tmp/ para liberar espacio.
+          3. Se reinicio el servicio nginx y se verifico su estado el cual es {{ nginx_status.status.ActiveState }}.
+          4. Se consulto la pagina web y se obtuvo un status code de {{ resultado.status }}.
+
+          Con esto se garantiza que el servicio nginx se encuentra funcionando correctamente y la pagina web es accesible.
+      delegate_to: localhost 
+
+    - name: Fallo en el reinicio
+      community.general.mail:
+        host: 192.168.3.2
+        port: 25
+        to: "{{ email }}"
+        from: Alan Rueda <alankewd@gmail.com>
+        subject: "ERROR: Correciones de servidor web fallidas"
+        body: |
+          El servicio nginx no se reinicio correctamente y el servicio web se encuentra abajo.
+          
+          Se realizó el siguiente procedimiento:
+          1. Se verificó el espacio en /var el cual era de {{ var_usage.stdout }}% 
+          2. Se eliminaron {{ archivos_encontrados.matched }} archivos en /var/lib/nginx/tmp/ para liberar espacio.
+          3. Se reinicio el servicio nginx y se verifico su estado el cual es {{ nginx_status.status.ActiveState }}.
+          4. Se consulto la pagina web y se obtuvo un status code de {{ resultado.status }}.
+
+          A pesar de aplicar el procedimiento escrito arriba el servicio nginx no se encuentra funcionando correctamente y la pagina web no es accesible. Se recomienda revisar el servidor para identificar la causa del fallo.
+      delegate_to: localhost
+      
+        
