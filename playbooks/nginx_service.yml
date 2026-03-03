@@ -45,11 +45,11 @@
 
 
     - name: Informar que no se reinicio el servicio nginx
-      ansible.builtin.fail:
+      ansible.builtin.debug:
         msg: "El servicio nginx no se reinicio correctamente"
       when: nginx_status.status.ActiveState != "active"
-      ignore_errors: true
       changed_when: True
+      ignore_errors: true
       notify: 
       - Fallo en el reinicio
 
