@@ -67,7 +67,7 @@
       community.general.mail:
         host: 192.168.3.2
         port: 25
-        to: "{{ email }}"
+        to: alan.rueda@datumredsoft.com
         from: Alan Rueda <alankewd@gmail.com>
         subject: "Correciones de servidor web exitosas"
         body: |
