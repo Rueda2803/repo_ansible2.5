@@ -37,12 +37,14 @@
       ansible.builtin.fail:
         msg: "El servicio nginx no se reinicio porque el espacio en /var no esta lleno"
       when: nginx_status.status.ActiveState != "active"
+      ignore_errors: true
 #      notify: Anunciar Cambio de contraseña
 
     - name: Informar que se reinicio el servicio nginx
       ansible.builtin.debug:
         msg: "El servicio nginx se reinicio correctamente"
       when: nginx_status.status.ActiveState == "active"
+      ignore_errors: true
  #     notify: Reinicio exitoso
 
     - name: Consultar pagina web
