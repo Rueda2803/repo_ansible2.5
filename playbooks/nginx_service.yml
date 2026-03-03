@@ -51,7 +51,7 @@
         method: GET
         return_content: no
         status_code: 200
-        timeout: "{{ timeout_segundos }}"
+        timeout: "5"
       register: resultado
       ignore_errors: true
 
