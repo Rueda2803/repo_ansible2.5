@@ -3,7 +3,7 @@
   hosts: Oracle
   tasks:
     - name: Verificar que la maquina este encendida
-      ansible.debug:
+      ansible.builtin.debug:
         msg: "La VM esta encendida"
 
     - name: Ejecutar shutdown
@@ -16,5 +16,5 @@
       ignore_errors: true
 
     - name: Informar que la VM se apago correctamente
-      ansible.debug:
+      ansible.builtin.debug:
         msg: "La VM se apago correctamente {{ resultado.stdout }}"
