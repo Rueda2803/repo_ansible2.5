@@ -1,0 +1,6 @@
+---
+- name: Apagar VM
+  hosts: Oracle
+  tasks:
+    - name: Ejecutar shutdown
+      ansible.builtin.shell: shutdown -h now
