@@ -2,5 +2,19 @@
 - name: Apagar VM
   hosts: Oracle
   tasks:
+    - name: Verificar que la maquina este encendida
+      ansible.debug:
+        msg: "La VM esta encendida"
+
     - name: Ejecutar shutdown
       ansible.builtin.shell: shutdown -h now
+      ignore_errors: true
+
+    - name: ping a la VM para verificar que se apago
+      ansible.builtin.cmd: ping -c 2 192.168.120.89
+      register: resultado
+      ignore_errors: true
+
+    - name: Informar que la VM se apago correctamente
+      ansible.debug:
+        msg: "La VM se apago correctamente {{ resultado.stdout }}"
