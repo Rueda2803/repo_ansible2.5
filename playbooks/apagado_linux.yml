@@ -11,7 +11,7 @@
       ignore_errors: true
 
     - name: ping a la VM para verificar que se apago
-      ansible.builtin.cmd: ping -c 2 192.168.120.89
+      ansible.builtin.shell: ping -c 2 192.168.120.89
       register: resultado
       ignore_errors: true
 
