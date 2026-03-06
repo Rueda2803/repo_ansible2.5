@@ -77,7 +77,7 @@
           
           Se realizó el siguiente procedimiento:
           1. Se verificó el espacio en /var el cual era de {{ var_usage.stdout }}% 
-          2. Se eliminaron {{ archivos_encontrados.matched }} archivos en /var/lib/nginx/tmp/ para liberar espacio.
+          2. Se eliminaron archivos en /var/lib/nginx/tmp/ para liberar espacio.
           3. Se reinicio el servicio nginx y se verifico su estado el cual es {{ nginx_status.status.ActiveState }}.
           4. Se consulto la pagina web y se obtuvo un status code de {{ resultado.status }}.
 
