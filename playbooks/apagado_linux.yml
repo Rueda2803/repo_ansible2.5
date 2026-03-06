@@ -9,7 +9,7 @@
 
     - name: Ejecutar shutdown
       ansible.builtin.shell: shutdown -h now
-      ignore_errors: true
+      ignore_unreachable: true
       delegate_to: 192.168.120.89
 
     - name: ping a la VM para verificar que se apago
