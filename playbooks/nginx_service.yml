@@ -1,11 +1,15 @@
 ---
-- name: Validar espacio en /var y limpiar si esta lleno
+- name: Validar servicio web
   hosts: all
   gather_facts: true
   tasks:
     - name: Verificar espacio en /var
       ansible.builtin.shell: "df -h /var | tail -1 | awk '{print $5}' | sed 's/%//'"
       register: var_usage
+
+    - name: Informar espacio en /var
+      ansible.builtin.debug:
+        msg: "El espacio en /var es de {{ var_usage.stdout }}%"
 
     - name: Buscar archivos en /var/lib/nginx/tmp/ si el espacio en /var es mayor o igual al 90%
       find:
@@ -21,6 +25,21 @@
         state: absent
       loop: "{{ archivos_encontrados.files }}"
       when: var_usage.stdout|int >= 90
+      
+    - name: Informar que se eliminaron archivos
+      ansible.builtin.debug:
+        msg: "Se eliminaron {{ archivos_encontrados.matched }} archivos en /var/lib/nginx/tmp/ para liberar espacio"
+      when: var_usage.stdout|int >= 90
+
+    - name: Informar que no es necesario eliminar archivos
+      ansible.builtin.debug:
+        msg: "No es necesario eliminar archivos en /var/lib/nginx/tmp/ ya que el espacio en /var es de {{ var_usage.stdout }}%"
+      when: var_usage.stdout|int < 90
+
+    - name: Informar que se va a reiniciar el servicio nginx
+      ansible.builtin.debug:
+        msg: "Se va a reiniciar el servicio nginx"
+      ignore_errors: true
 
     - name: Reiniciar servicio nginx
       ansible.builtin.service:
@@ -28,10 +47,24 @@
         state: restarted
       ignore_errors: true
 
+    - name: Esperar 10 segundos para que el servicio nginx se reinicie
+      ansible.builtin.pause:
+        seconds: 10
+
     - name: Verificar estado del servicio nginx
       ansible.builtin.systemd:
         name: nginx
       register: nginx_status
+
+    - name: Informar estado del servicio nginx
+      ansible.builtin.debug:
+        msg: "El estado del servicio nginx es {{ nginx_status.status.ActiveState }}"
+      ignore_errors: true
+
+    - name: Informar que se va a consultar la pagina web
+      ansible.builtin.debug:
+        msg: "Se va a consultar la pagina web para verificar que el servicio web se encuentra arriba"
+      ignore_errors: true
 
     - name: Consultar pagina web
       uri:
@@ -43,6 +76,17 @@
       register: resultado
       ignore_errors: true
 
+    - name: Informar resultado de la consulta a la pagina web esta arriba
+      ansible.builtin.debug:
+        msg: "La pagina web se encuentra arriba con un status code de {{ resultado.status }}"
+      ignore_errors: true
+      when: resultado.status == 200
+
+    - name: Informar resultado de la consulta a la pagina web esta abajo
+      ansible.builtin.debug:
+        msg: "La pagina web se encuentra abajo con un status code de {{ resultado.status }}"
+      ignore_errors: true
+      when: resultado.status != 200
 
     - name: Informar que no se reinicio el servicio nginx
       ansible.builtin.debug:
@@ -63,7 +107,6 @@
       - Reinicio exitoso 
 
     
-
   handlers:
     - name: Reinicio exitoso
       community.general.mail:
@@ -71,7 +114,7 @@
         port: 25
         to: alan.rueda@datumredsoft.com
         from: Alan Rueda <alankewd@gmail.com>
-        subject: "Correciones de servidor web exitosas"
+        subject: "Pagina web funcionando correctamente"
         body: |
           El servicio nginx se reinicio correctamente y el servicio web se encuentra arriba.
           
@@ -90,7 +133,7 @@
         port: 25
         to: alan.rueda@datumredsoft.com
         from: Alan Rueda <alankewd@gmail.com>
-        subject: "ERROR: Correciones de servidor web fallidas"
+        subject: "Fallo en la pagina web"
         body: |
           El servicio nginx no se reinicio correctamente y el servicio web se encuentra abajo.
           
@@ -99,5 +142,5 @@
           2. Se reinicio el servicio nginx y se verifico su estado el cual es {{ nginx_status.status.ActiveState }}.
           3. Se consulto la pagina web y se obtuvo un status code de {{ resultado.status }}.
 
-          A pesar de aplicar el procedimiento escrito arriba el servicio nginx no se encuentra funcionando correctamente y la pagina web no es accesible. Se recomienda revisar el servidor para identificar la causa del fallo.
+          A pesar de aplicar el procedimiento escrito en la parte superior el servicio nginx no se encuentra funcionando correctamente y la pagina web no es accesible. Por lo cual se ha aperturado el ticket # en la mesa de soporte.
       delegate_to: localhost
