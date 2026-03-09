@@ -49,7 +49,7 @@
 
     - name: Esperar 10 segundos para que el servicio nginx se reinicie
       ansible.builtin.pause:
-        seconds: 10
+        seconds: 5
 
     - name: Verificar estado del servicio nginx
       ansible.builtin.systemd:
