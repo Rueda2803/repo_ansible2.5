@@ -116,7 +116,7 @@
         from: Alan Rueda <alankewd@gmail.com>
         subject: "Pagina web funcionando correctamente"
         body: |
-          El servicio nginx se reinicio correctamente y el servicio web se encuentra arriba.
+          Se detecto que la pagina web estaba caida por lo que se procedio a realizar el siguiente procedimiento.
           
           Se realizó el siguiente procedimiento:
           1. Se verificó el espacio en /var el cual era de {{ var_usage.stdout }}% 
@@ -135,7 +135,7 @@
         from: Alan Rueda <alankewd@gmail.com>
         subject: "Fallo en la pagina web"
         body: |
-          El servicio nginx no se reinicio correctamente y el servicio web se encuentra abajo.
+          Se detecto que la pagina web estaba caida por lo que se procedio a realizar el siguiente procedimiento.
           
           Se realizó el siguiente procedimiento:
           1. Se verificó el espacio en /var para validar si es necesario liberar espacio, el espacio es de {{ var_usage.stdout }}%
