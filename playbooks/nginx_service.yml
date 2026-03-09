@@ -28,7 +28,8 @@
       
     - name: Informar que se eliminaron archivos
       ansible.builtin.debug:
-        msg: "Se eliminaron {{ archivos_encontrados.matched }} archivos en /var/lib/nginx/tmp/ para liberar espacio"
+        msg: "Se eliminó el archivo {{ item.path }} en /var/lib/nginx/tmp/ para liberar espacio"
+      loop: "{{ archivos_encontrados.files }}"
       when: var_usage.stdout|int >= 90
 
     - name: Informar que no es necesario eliminar archivos
@@ -119,10 +120,9 @@
           Se detecto que la pagina web estaba caida por lo que se procedio a realizar el siguiente procedimiento.
           
           Se realizó el siguiente procedimiento:
-          1. Se verificó el espacio en /var el cual era de {{ var_usage.stdout }}% 
-          2. Se eliminaron archivos en /var/lib/nginx/tmp/ para liberar espacio.
-          3. Se reinicio el servicio nginx y se verifico su estado el cual es {{ nginx_status.status.ActiveState }}.
-          4. Se consulto la pagina web y se obtuvo un status code de {{ resultado.status }}.
+          1. Se verificó el espacio en /var el cual era de {{ var_usage.stdout }}%
+          2. Se reinicio el servicio nginx y se verifico su estado el cual es {{ nginx_status.status.ActiveState }}.
+          3. Se consulto la pagina web y se obtuvo un status code de {{ resultado.status }}.
 
           Con esto se garantiza que el servicio nginx se encuentra funcionando correctamente y la pagina web es accesible.
       delegate_to: localhost 
