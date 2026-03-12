@@ -22,5 +22,5 @@
    
    - name: Informar resultado del ping
      ansible.builtin.debug:
-      msg: "El resultado del ping es {{ resultado.stdout }}"
+      msg: "El resultado del ping es {{ resultado.state }}"
      ignore_errors: true
