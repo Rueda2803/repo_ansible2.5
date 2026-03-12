@@ -6,3 +6,8 @@
   tasks:
     - name: Ejecutar comando de apagado
       ansible.windows.win_shell: shutdown /s /t 60 /c "Apagado por mantenimiento"
+
+    - name: Notificar apagado de equipo
+      ansible.builtin.debug: 
+        msg: "El equipo se apagara en 60 segundos"
+      delegate_to: localhost
