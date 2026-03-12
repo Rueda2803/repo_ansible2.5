@@ -4,26 +4,23 @@
   gather_facts: false
 
   tasks:
-    - name: Verificando ping hacia equipo
-      ansible.builtin.command: /usr/sbin/ping -c 2 {{ ansible_host }}
-      register: resultado
-      delegate_to: localhost
-      ignore_errors: true
+   - name: Ejecutar comando de apagado
+     ansible.windows.win_shell: shutdown /s /t 0
 
-#   - name: Ejecutar comando de apagado
-#     ansible.windows.win_shell: shutdown /s /t 0
+   - name: Esperar  15 segundos para apagado de equipo Windows
+     ansible.builtin.pause:
+       seconds: 20
 
-#   - name: Esperar  15 segundos para apagado de equipo Windows
-#     ansible.builtin.pause:
-#       seconds: 20
-
- #  - name: Verificando ping hacia equipo
- #    ansible.builtin.command: /bin/ping -c 2 {{ ansible_host }}
- #    register: resultado
- #    delegate_to: localhost
- #    ignore_errors: true
-
-    - name: Informar resultado del ping
-      ansible.builtin.debug:
-        msg: "El resultado del ping es {{ resultado.stdout }}"
-      ignore_errors: true
+   - name: Esperar que WinRM deje de responder
+     ansible.builtin.wait_for:
+      host: "{{ ansible_host }}"
+      port: 5985
+      state: stopped
+      timeout: 300
+     register: resultado
+     delegate_to: localhost
+   
+   - name: Informar resultado del ping
+     ansible.builtin.debug:
+      msg: "El resultado del ping es {{ resultado.stdout }}"
+     ignore_errors: true
