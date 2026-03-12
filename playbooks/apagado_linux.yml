@@ -13,7 +13,7 @@
       delegate_to: 192.168.120.89
 
     - name: ping a la VM para verificar que se apago
-      ansible.builtin.shell: ping -c 2 192.168.120.89
+      ansible.builtin.ping:
       register: resultado
       ignore_errors: true
 
