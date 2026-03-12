@@ -131,7 +131,7 @@
           Se realizó el siguiente procedimiento:
           1. Se verificó el espacio en /var el cual era de {{ var_usage.stdout }}%
           2. Se reinicio el servicio nginx y se verifico su estado el cual es {{ nginx_status.status.ActiveState }}.
-          3. Se consulto la pagina web y se obtuvo un status code de {{ resultado.status }}.
+          3. Se consulto la pagina web y esta se encuentra funcionando.
 
           Con esto se garantiza que el servicio nginx se encuentra funcionando correctamente y la pagina web es accesible.
       delegate_to: localhost 
@@ -150,7 +150,7 @@
           1. Se verificó el espacio en /var el cual era de {{ var_usage.stdout }}%
           2. Se eliminaron un total de {{ archivos_encontrados.matched }} archivos en /var/lib/nginx/tmp/ para liberar espacio.
           3. Se reinicio el servicio nginx y se verifico su estado el cual es {{ nginx_status.status.ActiveState }}.
-          4. Se consulto la pagina web y se obtuvo un status code de {{ resultado.status }}.
+          4. Se consulto la pagina web y esta se encuentra funcionando.
 
           Con esto se garantiza que el servicio nginx se encuentra funcionando correctamente y la pagina web es accesible.
       delegate_to: localhost 
@@ -168,7 +168,7 @@
           Se realizó el siguiente procedimiento:
           1. Se verificó el espacio en /var para validar si es necesario liberar espacio, el espacio es de {{ var_usage.stdout }}%
           2. Se reinicio el servicio nginx y se verifico su estado el cual es {{ nginx_status.status.ActiveState }}.
-          3. Se consulto la pagina web y se obtuvo un status code de {{ resultado.status }}.
+          3. Se consulto la pagina web y se obtuvo un status code de {{ resultado.status }}, lo cual indica un problema.
 
           A pesar de aplicar el procedimiento escrito en la parte superior el servicio nginx no se encuentra funcionando correctamente y la pagina web no es accesible. Por lo cual se ha aperturado el ticket # en la mesa de soporte.
       delegate_to: localhost
