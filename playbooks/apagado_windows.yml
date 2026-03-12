@@ -5,7 +5,7 @@
 
   tasks:
     - name: Verificando ping hacia equipo
-      ansible.builtin.command: /bin/ping -c 2 {{ ansible_host }}
+      ansible.builtin.command: /usr/sbin/ping -c 2 {{ ansible_host }}
       register: resultado
       delegate_to: localhost
       ignore_errors: true
