@@ -7,14 +7,15 @@
     - name: Ejecutar comando de apagado
       ansible.windows.win_shell: shutdown /s /t 0
 
-    - name: Verificando piung hacia equipo
-      ansible.builtin.shell: ping -c 2 192.168.120.49
-      delegate_to: 192.168.3.30
-      register: resultado
-
     - name: Esperar  15 segundos para apagado de equipo Windows
       ansible.builtin.pause:
-        seconds: 15
+        seconds: 20
+
+    - name: Verificando ping hacia equipo
+      ansible.builtin.command: /bin/ping -c 2 {{ ansible_host }}
+      register: resultado
+      delegate_to: localhost
+      ignore_errors: true
 
     - name: Informar resultado del ping
       ansible.builtin.debug:
