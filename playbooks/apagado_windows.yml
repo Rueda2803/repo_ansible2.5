@@ -7,7 +7,7 @@
    - name: Ejecutar comando de apagado
      ansible.windows.win_shell: shutdown /s /t 0
 
-   - name: Esperar  15 segundos para apagado de equipo Windows
+   - name: Esperar  20 segundos para apagado de equipo Windows
      ansible.builtin.pause:
        seconds: 20
 
