@@ -5,9 +5,18 @@
 
   tasks:
     - name: Ejecutar comando de apagado
-      ansible.windows.win_shell: shutdown /s /t 60 /c "Apagado por mantenimiento"
+      ansible.windows.win_shell: shutdown /s /t 0
 
-    - name: Notificar apagado de equipo
-      ansible.builtin.debug: 
-        msg: "El equipo se apagara en 60 segundos"
-      delegate_to: localhost
+    - name: Verificando piung hacia equipo
+      ansible.builtin.shell: ping -c 2 192.168.120.49
+      delegate_to: 192.168.3.30
+      register: resultado
+
+    - name: Esperar  15 segundos para apagado de equipo Windows
+      ansible.builtin.pause:
+        seconds: 15
+
+    - name: Informar resultado del ping
+      ansible.builtin.debug:
+        msg: "El resultado del ping es {{ resultado.stdout }}"
+      ignore_errors: true
