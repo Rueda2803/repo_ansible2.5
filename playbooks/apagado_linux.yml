@@ -1,17 +1,26 @@
 ---
 - name: Apagar VM
-  hosts: localhost
+  hosts: all
   tasks:
     - name: Verificar que la maquina este encendida
       ansible.builtin.debug:
         msg: "La VM esta encendida"
-      delegate_to: 192.168.120.89
 
     - name: Ejecutar shutdown
       ansible.builtin.shell: shutdown -h now
       ignore_unreachable: true
-      delegate_to: 192.168.120.89
+      ignore_errors: true
+
+    - name: Esperar que SSH deje de responder
+      ansible.builtin.wait_for:
+        host: "{{ ansible_host }}"
+        port: 22
+        state: stopped
+        timeout: 300
+      delegate_to: localhost
 
     - name: Informar que la VM se apago correctamente
       ansible.builtin.debug:
         msg: "La VM se apago correctamente"
+      delegate_to: localhost
+      ignore_errors: true
