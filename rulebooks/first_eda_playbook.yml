@@ -1,13 +1,13 @@
 ---
-- name: Check if the nginx config file is modified 
-  hosts: Laboratorio  
+- name: Check web page status and run a job if it's down 
+  hosts: all  
   sources:
     - ansible.eda.url_check:
         urls:
           - http://192.168.3.34:8080
         delay: 30
   rules:
-    - name: Run the action if the /usr/local/etc/nginx/nginx.conf is modified
+    - name: Run the action if the web page is down
       condition: event.url_check.status == "down"
       action:
         run_job_template:

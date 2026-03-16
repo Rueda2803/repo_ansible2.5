@@ -3,6 +3,17 @@
   hosts: all
   gather_facts: true
   tasks:
+    - name: Verificar status del servicio nginx
+      ansible.builtin.systemd:
+        name: nginx
+      register: nginx_status
+
+    - name: Informar status del servicio nginx
+      ansible.builtin.debug:
+        msg: "El estado del servicio nginx es {{ nginx_status.status.ActiveState }}"
+      ignore_errors: true
+      when: nginx_status is defined 
+                                           
     - name: Verificar espacio en /var
       ansible.builtin.shell: "df -h /var | tail -1 | awk '{print $5}' | sed 's/%//'"
       register: var_usage
@@ -124,9 +135,9 @@
         port: 25
         to: alan.rueda@datumredsoft.com
         from: Soporte IT <soporteitsv@datumredsoft.com>
-        subject: "Pagina web funcionando correctamente"
+        subject: "Pagina web BancaRedsoft funcionando correctamente"
         body: |
-          Se detecto que la pagina web estaba caida por lo que se procedio a realizar lo siguiente.
+          Se detecto que la pagina web BancaRedsoft con ip 192.168.8.34 estaba caida por lo que se procedio a realizar lo siguiente.
           
           Se realizó el siguiente procedimiento:
           1. Se verificó el espacio en /var el cual era de {{ var_usage.stdout }}%
@@ -142,9 +153,9 @@
         port: 25
         to: alan.rueda@datumredsoft.com
         from: Soporte IT <soporteitsv@datumredsoft.com>
-        subject: "Pagina web funcionando correctamente"
+        subject: "Pagina web BancaRedsoft funcionando correctamente"
         body: |
-          Se detecto que la pagina web estaba caida por lo que se procedio a realizar lo siguiente.
+          Se detecto que la pagina web BancaRedsoft con ip 192.168.8.34 estaba caida por lo que se procedio a realizar lo siguiente.
           
           Se realizó el siguiente procedimiento:
           1. Se verificó el espacio en /var el cual era de {{ var_usage.stdout }}%
@@ -161,16 +172,16 @@
         port: 25
         to: alan.rueda@datumredsoft.com
         from: Soporte IT <soporteitsv@datumredsoft.com>
-        subject: "Fallo en la pagina web"
+        subject: "ERROR: Pagina web BancaRedsoft no se encuentra funcionando"
         body: |
-          Se detecto que la pagina web estaba caida por lo que se procedio a realizar lo siguiente.
+          Se detecto que la pagina web BancaRedsoft con ip 192.168.8.34 estaba caida por lo que se procedio a realizar lo siguiente.
           
           Se realizó el siguiente procedimiento:
           1. Se verificó el espacio en /var para validar si es necesario liberar espacio, el espacio es de {{ var_usage.stdout }}%
           2. Se reinicio el servicio nginx y se verifico su estado el cual es {{ nginx_status.status.ActiveState }}.
           3. Se consulto la pagina web y se obtuvo un status code de {{ resultado.status }}, lo cual indica un problema.
 
-          A pesar de aplicar el procedimiento escrito en la parte superior el servicio nginx no se encuentra funcionando correctamente y la pagina web no es accesible. Por lo cual se ha aperturado el ticket # en la mesa de soporte.
+          A pesar de aplicar el procedimiento escrito en la parte superior el servicio nginx no se encuentra funcionando correctamente y la pagina web no es accesible. Por lo cual se ha aperturado el ticket #P-1987 en la mesa de soporte.
       delegate_to: localhost
 
       
