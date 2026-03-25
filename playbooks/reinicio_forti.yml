@@ -1,11 +1,16 @@
 ---
 - name: Reinicio de FortiGate
   hosts: all
+  connection: httpapi
   gather_facts: false
+  vars:
+   ansible_httpapi_use_ssl: true
+   ansible_httpapi_validate_certs: false
+   ansible_httpapi_port: 443
   tasks:
     - name: reiniciar FortiGate
       fortinet.fortios.fortios_monitor:
-        #vdom: "root"
+        vdom: "root"
         #access_token: "you_own_value"
         selector: 'reboot.system.os'
         params:
