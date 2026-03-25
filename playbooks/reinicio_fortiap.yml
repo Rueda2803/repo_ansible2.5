@@ -4,5 +4,4 @@
   gather_facts: false
   tasks:
     - name: Reinicio de FortiAP
-      ansible.builtin.shell: 
-        cmd: reboot
+      ansible.builtin.command:  reboot
