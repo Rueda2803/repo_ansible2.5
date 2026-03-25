@@ -3,7 +3,7 @@
   hosts: all
   gather_facts: false
   tasks:
-    - name: Apagar FortiGate
+    - name: reiniciar FortiGate
       fortinet.fortios.fortios_monitor:
         #vdom: "root"
         #access_token: "you_own_value"
