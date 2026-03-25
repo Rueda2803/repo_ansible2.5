@@ -1,0 +1,12 @@
+---
+- name: Reinicio de FortiGate
+  hosts: fortigate
+  gather_facts: false
+  tasks:
+    - name: Apagar FortiGate
+      fortinet.fortios.fortios_monitor:
+        vdom: "root"
+        access_token: "you_own_value"
+        selector: 'reboot.system.os'
+        params:
+            event_log_message: 'Reboot Request From Ansible'
