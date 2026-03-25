@@ -1,0 +1,8 @@
+---
+- name: Reinicio de FortiAP
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Reinicio de FortiAP
+      ansible.builtin.shell: 
+        cmd: reboot
