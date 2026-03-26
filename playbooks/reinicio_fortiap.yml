@@ -3,8 +3,25 @@
   hosts: all
   gather_facts: false
   tasks:
+    - name: Informar inicio del reinicio
+      ansible.builtin.debug:
+        msg: "Iniciando reinicio de FortiAP en FortiAP"
+
     - name: Reboot FortiAP
       ansible.builtin.shell: ssh admin@192.168.20.141 "reboot"
+      ignore_errors: true
+
+    - name: Verificiar que el comando se ejecuto correctamente 
+      ansible.builtin.wait_for:
+        host: 192.168.20.141
+        port: 22
+        state: stopped
+        timeout: 300
+      register: resultado
+
+    - name: Informar resultado del reinicio
+      ansible.builtin.debug:
+        msg: "El resultado del reinicio es {{ resultado.state }}"
       ignore_errors: true
 
     - name: Wait for FortiAP to come back online
@@ -14,5 +31,11 @@
         state: started
         delay: 30
         timeout: 300
+      register: resultado_reinicio
+
+    - name: Informar resultado del reinicio
+      ansible.builtin.debug:
+        msg: "El resultado del reinicio es {{ resultado_reinicio.state }}"
+      ignore_errors: true
 
   
