@@ -1,7 +1,7 @@
 ---
 - name: Reinicio de FortiGate
   hosts: all
-  connection: httpapi
+  #connection: httpapi
   gather_facts: false
   vars:
    ansible_httpapi_use_ssl: true
