@@ -11,7 +11,8 @@
       ansible.builtin.wait_for:
         host: 192.168.120.141
         port: 22
+        state: started
         delay: 30
-        timeout: 5000
+        timeout: 300
 
   
