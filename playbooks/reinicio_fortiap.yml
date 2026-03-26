@@ -1,9 +1,16 @@
 ---
 - name: Reinicio de FortiAP
   hosts: all
-  connection: httpapi
   gather_facts: false
   tasks:
-    - name: run show version on remote devices
-      ansible.netcommon.cli_command:
-        command: show version
+    - name: Reboot FortiAP
+      ansible.builtin.shell: ssh admin@192.168.120.141 "reboot"
+
+    - name: Wait for FortiAP to come back online
+      ansible.builtin.wait_for:
+        host: 192.168.120.141
+        port: 22
+        delay: 30
+        timeout: 300
+
+  
