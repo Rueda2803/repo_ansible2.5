@@ -1,8 +1,44 @@
----
-- name: Reinicio de servidor HP
+- name: Reinicio switch HP
   hosts: all
   gather_facts: false
   tasks:
-    - name: Probar conexion
-      ansible.netcommon.cli_command:
-        command: show version
+    - name: Informar inicio del reinicio
+      ansible.builtin.debug:
+        msg: "Iniciando reinicio de Fortigate Firewall 110C"
+
+    - name: Reboot Forti Firewall
+      ansible.builtin.shell: |
+        ssh manager@192.168.20.5<< EOF
+        Tecnasa0
+
+        show version
+        EOF
+      ignore_errors: true
+          
+#
+#    - name: Verificiar que el comando se ejecuto correctamente 
+#      ansible.builtin.wait_for:
+#        host: 192.168.20.99
+#        port: 22
+#        state: stopped
+#        timeout: 300
+#      register: resultado
+
+#    - name: Informar resultado del reinicio
+#      ansible.builtin.debug:
+#        msg: "El resultado del reinicio es {{ resultado.state }}"
+#      ignore_errors: true
+
+#    - name: Wait for FortiAP to come back online
+#      ansible.builtin.wait_for:
+#        host: 192.168.20.99
+#        port: 22
+#        state: started
+#        delay: 30
+#        timeout: 300
+#      register: resultado_reinicio
+
+ #   - name: Informar resultado del reinicio
+  #    ansible.builtin.debug:
+   #     msg: "El resultado del reinicio es {{ resultado_reinicio.state }}"
+    #  ignore_errors: true
