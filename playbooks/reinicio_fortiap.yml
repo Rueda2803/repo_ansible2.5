@@ -9,7 +9,7 @@
 
     - name: Wait for FortiAP to come back online
       ansible.builtin.wait_for:
-        host: 192.168.120.141
+        host: 192.168.20.141
         port: 22
         state: started
         delay: 30
