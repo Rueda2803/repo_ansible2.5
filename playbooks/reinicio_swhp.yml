@@ -9,10 +9,4 @@
           - reload
           - y
 
- #   - name: Reiniciar servidor HP
- #     arubaoss_command:
- #       commands: 
- #         - reload
- #         - y
-
         
