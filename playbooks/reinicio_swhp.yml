@@ -8,8 +8,7 @@
 
     - name: Reboot switch HP
       ansible.builtin.shell: |
-        ssh manager@192.168.20.5<< EOF
-        Tecnasa0
+        sshpass -p "Tecnasa0" ssh manager@192.168.20.5<< EOF
 
         show version
         EOF
