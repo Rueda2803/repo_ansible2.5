@@ -12,6 +12,6 @@
         host: 192.168.120.141
         port: 22
         delay: 30
-        timeout: 300
+        timeout: 5000
 
   
