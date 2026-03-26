@@ -4,9 +4,9 @@
   tasks:
     - name: Informar inicio del reinicio
       ansible.builtin.debug:
-        msg: "Iniciando reinicio de Fortigate Firewall 110C"
+        msg: "Iniciando reinicio de switch HP"
 
-    - name: Reboot Forti Firewall
+    - name: Reboot switch HP
       ansible.builtin.shell: |
         ssh manager@192.168.20.5<< EOF
         Tecnasa0
