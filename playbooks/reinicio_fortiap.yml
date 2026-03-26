@@ -5,6 +5,7 @@
   tasks:
     - name: Reboot FortiAP
       ansible.builtin.shell: ssh admin@192.168.20.141 "reboot"
+      ignore_errors: true
 
     - name: Wait for FortiAP to come back online
       ansible.builtin.wait_for:
