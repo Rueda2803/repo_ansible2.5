@@ -1,12 +1,8 @@
 ---
 - name: Reinicio de servidor HP
-  hosts: swhp
+  hosts: all
   gather_facts: false
   tasks:
-    - name: Reiniciar servidor HP 
-      community.network.aruba_command:
-        commands: 
-          - reload
-          - y
-
-        
+    - name: Probar conexion
+      ansible.netcommon.cli_command:
+        command: show version
