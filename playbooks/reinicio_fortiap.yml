@@ -1,6 +1,7 @@
 ---
 - name: Reinicio de FortiAP
   hosts: all
+  connection: httpapi
   gather_facts: false
   tasks:
     - name: run show version on remote devices
