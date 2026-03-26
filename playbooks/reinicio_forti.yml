@@ -8,10 +8,13 @@
         msg: "Iniciando reinicio de Fortigate Firewall 110C"
 
     - name: Reboot Forti Firewall
-      ansible.builtin.expect:
-        command: ssh admin@192.168.20.99 "exec reboot"
-        responses:
-          "Do you want to continue? (y/n)y"
+      ansible.builtin.shell: |
+        ssh admin@192.168.20.99
+
+        expect "This operation will reboot the system !
+        Do you want to continue? (y/n)"
+
+        send "y"
 
     - name: Verificiar que el comando se ejecuto correctamente 
       ansible.builtin.wait_for:
