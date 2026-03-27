@@ -5,8 +5,9 @@
     - name: test conexion
       community.network.aruba_command:
         commands: 
-          - show version
           - reload
+          - y
+      ignore_errors: true
 #
 #    - name: Verificiar que el comando se ejecuto correctamente 
 #      ansible.builtin.wait_for:
