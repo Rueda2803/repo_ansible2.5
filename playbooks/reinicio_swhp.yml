@@ -2,17 +2,9 @@
   hosts: all
   gather_facts: false
   tasks:
-    - name: Informar inicio del reinicio
-      ansible.builtin.debug:
-        msg: "Iniciando reinicio de switch HP"
-
-    - name: Reboot switch HP
-      ansible.builtin.expect:
-        command: ssh manager@192.168.20.5
-        responses:
-          "Press any key to continue": " "
-          "System will be rebooted from primary image. Do you want to continue [y/n]?": "y"
-          
+    - name: test conexion
+      ansible.netcommon.cli_command:
+        command: show system
 #
 #    - name: Verificiar que el comando se ejecuto correctamente 
 #      ansible.builtin.wait_for:
