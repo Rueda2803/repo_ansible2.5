@@ -7,12 +7,11 @@
         msg: "Iniciando reinicio de switch HP"
 
     - name: Reboot switch HP
-      ansible.builtin.shell: |
-        ssh manager@192.168.20.5 << EOF
-        reload
-        y
-        EOF
-      ignore_errors: true
+      ansible.builtin.expect:
+        command: ssh manager@192.168.20.5
+        responses:
+          "Press any key to continue": " "
+          "System will be rebooted from primary image. Do you want to continue [y/n]?": "y"
           
 #
 #    - name: Verificiar que el comando se ejecuto correctamente 
