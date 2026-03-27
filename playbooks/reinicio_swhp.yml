@@ -9,10 +9,7 @@
     - name: Reboot switch HP
       ansible.builtin.shell: |
         ssh manager@192.168.20.5 << EOF
-        
-        show version
-        exit
-        exit
+        reload
         y
         EOF
       ignore_errors: true
