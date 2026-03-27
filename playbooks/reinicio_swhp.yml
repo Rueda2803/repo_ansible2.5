@@ -5,6 +5,10 @@
     - name: test conexion
       ansible.netcommon.cli_command:
         command: reload
+        prompt: 
+          - "System will be rebooted from primary image. Do you want to continue [y/n]?"
+        answer: 
+          - "y"
       ignore_errors: true
 #
 #    - name: Verificiar que el comando se ejecuto correctamente 
