@@ -6,8 +6,7 @@
       community.network.aruba_command:
         commands: 
           - reload
-          - y
-      ignore_errors: true
+      register: resultado
 #
 #    - name: Verificiar que el comando se ejecuto correctamente 
 #      ansible.builtin.wait_for:
