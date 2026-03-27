@@ -3,8 +3,8 @@
   gather_facts: false
   tasks:
     - name: test conexion
-      ansible.netcommon.cli_command:
-        command: show system
+      community.network.aruba_command:
+        commands: show version
 #
 #    - name: Verificiar que el comando se ejecuto correctamente 
 #      ansible.builtin.wait_for:
