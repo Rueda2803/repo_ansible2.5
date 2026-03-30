@@ -2,7 +2,7 @@
   hosts: all
   gather_facts: false
   tasks:
-    - name: test conexion
+    - name: Reinicio switch HP
       ansible.netcommon.cli_command:
         command: reload
         prompt: 
@@ -10,30 +10,3 @@
         answer: 
           - "y"
       ignore_errors: true
-#
-#    - name: Verificiar que el comando se ejecuto correctamente 
-#      ansible.builtin.wait_for:
-#        host: 192.168.20.99
-#        port: 22
-#        state: stopped
-#        timeout: 300
-#      register: resultado
-
-#    - name: Informar resultado del reinicio
-#      ansible.builtin.debug:
-#        msg: "El resultado del reinicio es {{ resultado.state }}"
-#      ignore_errors: true
-
-#    - name: Wait for FortiAP to come back online
-#      ansible.builtin.wait_for:
-#        host: 192.168.20.99
-#        port: 22
-#        state: started
-#        delay: 30
-#        timeout: 300
-#      register: resultado_reinicio
-
- #   - name: Informar resultado del reinicio
-  #    ansible.builtin.debug:
-   #     msg: "El resultado del reinicio es {{ resultado_reinicio.state }}"
-    #  ignore_errors: true
