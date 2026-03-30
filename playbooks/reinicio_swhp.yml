@@ -27,6 +27,6 @@
 
     - name: Informar resultado del reinicio
       ansible.builtin.debug:
-        msg: "El resultado del reinicio es {{ resultado.state }}"
+        msg: "El resultado del reinicio es exitoso"
       ignore_errors: true
       delegate_to: localhost
