@@ -1,7 +1,11 @@
 - name: Reinicio switch HP
-  hosts: all
+  hosts: localhost
   gather_facts: false
   tasks:
+    - name: Informar inicio del reinicio
+      ansible.builtin.debug:
+        msg: "Iniciando reinicio del switch HP"
+          
     - name: Reinicio switch HP
       ansible.netcommon.cli_command:
         command: reload
@@ -10,3 +14,10 @@
         answer: 
           - "y"
       ignore_errors: true
+      delegate_to: HP_Switch
+
+    - name: Verificiar que el comando se ejecuto correctamente
+      ansible.builtin.wait_for:
+        host: 192.168.20.5
+        port: 22
+        state: stopped
