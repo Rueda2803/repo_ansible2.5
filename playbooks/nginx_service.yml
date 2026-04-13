@@ -133,7 +133,7 @@
       community.general.mail:
         host: 192.168.3.2
         port: 25
-        to: guiller.torres@datumredsoft.com
+        to: guillermo.torres@datumredsoft.com
         from: Soporte IT <soporteitsv@datumredsoft.com>
         subject: "Pagina web BancaRedsoft funcionando correctamente"
         body: |
@@ -151,7 +151,7 @@
       community.general.mail:
         host: 192.168.3.2
         port: 25
-        to: guiller.torres@datumredsoft.com
+        to: guillermo.torres@datumredsoft.com
         from: Soporte IT <soporteitsv@datumredsoft.com>
         subject: "Pagina web BancaRedsoft funcionando correctamente"
         body: |
@@ -170,7 +170,7 @@
       community.general.mail:
         host: 192.168.3.2
         port: 25
-        to: guiller.torres@datumredsoft.com
+        to: guillermo.torres@datumredsoft.com
         from: Soporte IT <soporteitsv@datumredsoft.com>
         subject: "ERROR: Pagina web BancaRedsoft no se encuentra funcionando"
         body: |
