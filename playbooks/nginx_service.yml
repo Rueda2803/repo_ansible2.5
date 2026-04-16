@@ -137,7 +137,7 @@
         from: Soporte IT <soporteitsv@datumredsoft.com>
         subject: "Pagina web BancaRedsoft funcionando correctamente"
         body: |
-          Se detecto que la pagina web BancaRedsoft con ip 192.168.8.34 estaba caida por lo que se procedio a realizar lo siguiente.
+          Se detecto que la pagina web BancoDatum con ip 192.168.8.34 estaba caida por lo que se procedio a realizar lo siguiente.
           
           Se realizó el siguiente procedimiento:
           1. Se verificó el espacio en /var el cual era de {{ var_usage.stdout }}%
@@ -155,7 +155,7 @@
         from: Soporte IT <soporteitsv@datumredsoft.com>
         subject: "Pagina web BancaRedsoft funcionando correctamente"
         body: |
-          Se detecto que la pagina web BancaRedsoft con ip 192.168.8.34 estaba caida por lo que se procedio a realizar lo siguiente.
+          Se detecto que la pagina web BancoDatum con ip 192.168.8.34 estaba caida por lo que se procedio a realizar lo siguiente.
           
           Se realizó el siguiente procedimiento:
           1. Se verificó el espacio en /var el cual era de {{ var_usage.stdout }}%
@@ -174,7 +174,7 @@
         from: Soporte IT <soporteitsv@datumredsoft.com>
         subject: "ERROR: Pagina web BancaRedsoft no se encuentra funcionando"
         body: |
-          Se detecto que la pagina web BancaRedsoft con ip 192.168.8.34 estaba caida por lo que se procedio a realizar lo siguiente.
+          Se detecto que la pagina web BancoDatum con ip 192.168.8.34 estaba caida por lo que se procedio a realizar lo siguiente.
           
           Se realizó el siguiente procedimiento:
           1. Se verificó el espacio en /var para validar si es necesario liberar espacio, el espacio es de {{ var_usage.stdout }}%
