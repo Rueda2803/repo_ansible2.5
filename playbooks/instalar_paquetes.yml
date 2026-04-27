@@ -1,0 +1,29 @@
+---
+- name: Instalación de paquetes
+  hosts: all
+  tasks:
+    - name: Mensaje de instalación de paquetes
+      ansible.builtin.debug:
+        msg: "Iniciando proceso de instalación de paquetes en {{ inventory_hostname }}"
+
+    - name: Instalar paquetes necesarios
+      ansible.builtin.dnf:
+        name:
+          - nginx
+          - git
+          - vim
+          - curl
+        state: present
+
+    - name: Informar que la instalación de paquetes se ha completado
+      ansible.builtin.debug:
+        msg: "La instalación de paquetes en {{ inventory_hostname }} se ha completado"
+
+    - name: Eliminar los paquetes instalados
+      ansible.builtin.dnf:
+        name:
+          - nginx
+          - git
+          - vim
+          - curl
+        state: absent
