@@ -1,0 +1,21 @@
+---
+- name: Actualización de servidores
+  hosts: all
+  tasks:
+    - name: Mensaje de actualización
+      ansible.builtin.debug:
+        msg: "Iniciando proceso de actualización en {{ inventory_hostname }}"
+
+    - name: Actualizar lista de paquetes
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+
+    - name: Reiniciar el servidor si es necesario
+      ansible.builtin.reboot:
+        reboot_timeout: 300
+      when: ansible_facts['os_family'] == "RedHat"
+
+    - name: Informar que la actualización se ha completado
+      ansible.builtin.debug:
+        msg: "La actualización en {{ inventory_hostname }} se ha completado"
