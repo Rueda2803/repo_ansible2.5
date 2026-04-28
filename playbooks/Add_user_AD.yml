@@ -5,8 +5,8 @@
    - name: Ensure user bob is present with address information
      microsoft.ad.user:
        identity: bob
-       firstname: Bob
-       surname: Smith
+       firstname: "{{ nombre_usuario }}"
+       surname: "{{ apellido_usuario }}"
        company: BobCo
        password: B0bP4ssw0rd
        state: present
