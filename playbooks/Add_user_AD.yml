@@ -4,7 +4,7 @@
   tasks:
    - name: Ensure user bob is present with address information
      microsoft.ad.user:
-       identity: bob
+       identity: "{{ nombre_usuario }}"
        firstname: "{{ nombre_usuario }}"
        surname: "{{ apellido_usuario }}"
        company: BobCo
