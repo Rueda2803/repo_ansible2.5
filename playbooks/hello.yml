@@ -1,6 +1,7 @@
 ---
 - name: Hello World Playbook
-  hosts: all
+  hosts: localhost
+  connection: local
   vars:
     prueba: "Hola, Mundo!"
   tasks:
