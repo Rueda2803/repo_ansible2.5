@@ -1,6 +1,6 @@
 ---
 - name: Instalar nginx en ubuntu EC2
-  hosts: {{ instance_name }}
+  hosts: "{{ instance_name }}"
   become: true
   tasks:
     - name: Instalar nginx
