@@ -20,4 +20,4 @@
 
   - name: Instances ID
     debug:
-      msg: "ID: {{ item.instance_id }} - State: {{ item.state.name }} - Public DNS: {{ item.public_ip_address }}"
+      msg: "ID: {{ ec2.instance_id }} - State: {{ ec2.state.name }} - Public DNS: {{ ec2.public_ip_address }}"
