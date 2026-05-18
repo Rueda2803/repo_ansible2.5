@@ -6,7 +6,7 @@
   tasks:
   - name: Create a EC2 instance
     amazon.aws.ec2_instance:
-      name: "AAP-EC2"
+      name: "AAP-EC2-New"
       key_name: "ansible-demo"
       instance_type: t3.small
       image_id: ami-05cf1e9f73fbad2e2
@@ -26,7 +26,11 @@
       port: 22                      
       state: started                
       delay: 5                      
-      timeout: 600                            
+      timeout: 600         
+
+  - name: Esperar 5 minutos para asegurar que la instancia esté completamente lista
+    ansible.builtin.pause:
+      minutes: 5                   
 
   - name: Instances ID
     debug:
