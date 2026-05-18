@@ -3,7 +3,7 @@
   hosts: localhost
   connection: local
   vars:
-    prueba: "Hola, Mundo!"
+    prueba: "Hola, Mundo Nuevo!"
   tasks:
     - name: Print Hello World
       ansible.builtin.debug:
@@ -13,4 +13,3 @@
       ansible.builtin.set_stats:
         data:
           mensaje_nodo1: "{{ prueba }}"
-        per_host: false
