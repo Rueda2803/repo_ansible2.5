@@ -1,0 +1,26 @@
+---
+- name: Instalar nginx en ubuntu EC2
+  hosts: {{ instance_name }}
+  become: true
+  tasks:
+    - name: Instalar nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+      ignore_errors: true
+
+    - name: Inicar servicio nginx
+      ansible.builtin.service:
+        name: nginx
+        state: started
+
+    - name: Configurar nginx para servir una página de bienvenida personalizada
+      ansible.builtin.copy:
+        dest: /var/www/html/index.html
+        content: "<html><body><h1>Bienvenido a Ansible en AWS EC2</h1></body></html>"
+      ignore_errors: true
+
+    - name: Reiniciar nginx para aplicar cambios
+      ansible.builtin.service:
+        name: nginx
+        state: restarted

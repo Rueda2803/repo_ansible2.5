@@ -6,12 +6,12 @@
   tasks:
   - name: Create a EC2 instance
     amazon.aws.ec2_instance:
-      name: "Ansible-EC2"
+      name: "AAP-EC2"
       key_name: "ansible-demo"
       instance_type: t3.small
       image_id: ami-05cf1e9f73fbad2e2
       region: us-east-1
-      security_group: default
+      security_group: launch-wizard-2
       network_interfaces:
       - assign_public_ip: yes
       tags:
@@ -20,6 +20,21 @@
       wait: true
     register: ec2
 
+  - name: Esperar a que la IP responda en el puerto SSH
+    ansible.builtin.wait_for:
+      host: "{{ ec2.instances[0].public_ip_address }}"          
+      port: 22                      
+      state: started                
+      delay: 5                      
+      timeout: 600                            
+
   - name: Instances ID
     debug:
       msg: "ID: {{ ec2.instance_ids }} - State: {{ ec2.instances[0].state.name }} - Public IP: {{ ec2.instances[0].public_ip_address }}"
+
+  - name: Pasar la IP pública al Workflow de AAP
+    ansible.builtin.set_stats:
+      data:
+        instance_name: "{{ ec2.instances[0].tags.Name }}"
+
+    
