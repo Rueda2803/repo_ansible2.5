@@ -16,6 +16,8 @@
       - assign_public_ip: yes
       tags:
         Environment: Ansible
+      state: running
+      wait: true
     register: ec2
 
   - name: Instances ID
