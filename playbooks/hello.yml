@@ -13,4 +13,4 @@
       ansible.builtin.set_stats:
         data:
           mensaje_nodo1: "{{ prueba }}"
-        per_host: false
+        per_host: true
