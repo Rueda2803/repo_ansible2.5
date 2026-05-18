@@ -3,6 +3,11 @@
   hosts: "{{ instance_name }}"
   become: true
   tasks:
+    - name: Actualizar el caché de apt y hacer upgrade de todos los paquetes
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: dist 
+        cache_valid_time: 3600 
     - name: Instalar nginx
       ansible.builtin.apt:
         name: nginx
