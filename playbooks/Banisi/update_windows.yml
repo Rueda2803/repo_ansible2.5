@@ -1,7 +1,6 @@
 ---
 - name: Actualización de servidores Windows
   hosts: all
-  become: true
   tasks:
   - name: Instalar actualizaciones de Windows
     win_updates:
