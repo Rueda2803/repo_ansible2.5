@@ -11,8 +11,8 @@
       state: latest
       update_cache: true
     when:
-    - ansible_facts['ansible_distribution'] == "OracleLinux"
-    - ansible_facts['ansible_distribution_major_version'] in ['7', '8', '9']
+      - ansible_facts['ansible_distribution'] == "OracleLinux"
+      - ansible_facts['ansible_distribution_major_version'] in ['7', '8', '9']
     ignore_errors: yes
 
   - name: Actualizar todos los paquetes en RHEL 6
@@ -21,8 +21,8 @@
       state: latest
       update_cache: true
     when:
-    - ansible_facts['ansible_distribution'] == "RedHat"
-    - ansible_facts['ansible_distribution_major_version'] == "6"
+      - ansible_facts['ansible_distribution'] == "RedHat"
+      - ansible_facts['ansible_distribution_major_version'] == "6"
     ignore_errors: yes
 
   - name: Actualizar todos los paquetes en CentOS 6
@@ -30,7 +30,7 @@
       name: "*"
       state: latest
       update_cache: true
-    when:
-    - ansible_facts['ansible_distribution'] == "CentOS"
-    - ansible_facts['ansible_distribution_major_version'] == "6"
+      when:
+      - ansible_facts['ansible_distribution'] == "CentOS"
+      - ansible_facts['ansible_distribution_major_version'] == "6"
     ignore_errors: yes
