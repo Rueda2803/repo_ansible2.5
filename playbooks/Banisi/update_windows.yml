@@ -1,0 +1,16 @@
+---
+- name: Actualización de servidores Windows
+  hosts: all
+  become: true
+  tasks:
+  - name: Instalar actualizaciones de Windows
+    win_updates:
+      category_names:
+      - Critical Updates
+      - Security Updates
+      state: installed
+    register: update_result
+
+  - name: Informar actualizaciones aplicadas
+    debug:
+      msg: "Se han aplicado {{ update_result.updates | length }} actualizaciones en {{ inventory_hostname }}"
