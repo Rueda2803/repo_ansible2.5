@@ -12,4 +12,8 @@
 
   - name: Informar actualizaciones aplicadas
     debug:
-      msg: "Se han aplicado {{ update_result.updates | length }} actualizaciones en {{ inventory_hostname }}"
+      msg: "Se han aplicado {{ update_result.installed_updates_count }} actualizaciones en {{ inventory_hostname }}"
+
+  - name: Actualizaciones aplicadas
+    debug:
+      var: "Se aplicaron las siguientes actualizaciones en {{ inventory_hostname }}: {{ update_result.title }}"
