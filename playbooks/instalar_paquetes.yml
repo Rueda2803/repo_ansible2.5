@@ -13,7 +13,7 @@
         name:
           - tmux
           - bind-utils
-          - nmpa
+          - nmap
         state: present
 
     - name: Informar que la instalación de paquetes se ha completado
@@ -25,5 +25,5 @@
         name:
           - tmux
           - bind-utils
-          - nmpa
+          - nmap
         state: absent
