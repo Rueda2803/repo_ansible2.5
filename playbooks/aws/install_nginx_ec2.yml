@@ -19,10 +19,10 @@
         name: nginx
         state: started
 
-    - name: Configurar nginx para servir una página de bienvenida personalizada
+    - name: Configurar nginx para servir una página web personalizada
       ansible.builtin.copy:
+        src: index.html
         dest: /var/www/html/index.html
-        content: "<html><body><h1>Bienvenido a Ansible en AWS EC2</h1></body></html>"
       ignore_errors: true
 
     - name: Reiniciar nginx para aplicar cambios
