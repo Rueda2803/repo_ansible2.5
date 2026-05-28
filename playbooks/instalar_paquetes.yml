@@ -1,6 +1,8 @@
 ---
 - name: Instalación de paquetes
   hosts: all
+  become: true
+  gather_facts: true
   tasks:
     - name: Mensaje de instalación de paquetes
       ansible.builtin.debug:
