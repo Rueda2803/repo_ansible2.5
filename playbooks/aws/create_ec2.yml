@@ -6,7 +6,7 @@
   tasks:
   - name: Create a EC2 instance
     amazon.aws.ec2_instance:
-      name: "aap-newinst2"
+      name: "{{ amazon_ec2_name }}"
       key_name: "ansible-demo"
       instance_type: t3.small
       image_id: ami-05cf1e9f73fbad2e2
