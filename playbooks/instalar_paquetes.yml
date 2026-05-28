@@ -9,9 +9,9 @@
     - name: Instalar paquetes necesarios
       ansible.builtin.dnf:
         name:
-          - nginx
-          - git
-          - vim
+          - tmux
+          - bind-utils
+          - nmpa
         state: present
 
     - name: Informar que la instalación de paquetes se ha completado
@@ -21,7 +21,7 @@
     - name: Eliminar los paquetes instalados
       ansible.builtin.dnf:
         name:
-          - nginx
-          - git
-          - vim
+          - tmux
+          - bind-utils
+          - nmpa
         state: absent
