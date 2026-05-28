@@ -1,0 +1,29 @@
+---
+- name: Actualización de certificados en servicio web
+  hosts: all
+  become: true
+  gather_facts: true
+
+  tasks:
+  - name: Verificar antiguo certificado
+    ansible.builtin.command: openssl x509 -in /etc/pki/tls/certs/nginx-selfsigned.crt -text -noout
+    register: old_cert
+    ignore_errors: true
+
+  - name: Generar nuevo certificado (simulado)
+    ansible.builtin.command: openssl req -x509 -nodes -days 365 -newkey rsa:2048 \ -keyout /etc/pki/tls/private/nginx-selfsigned.key \ -out /etc/pki/tls/certs/nginx-selfsigned.crt \ -subj "/C=MX/ST=CDMX/L=CDMX/O=MiEmpresa/OU=IT/CN=150.136.176.185"
+    register: new_cert
+
+  - name: Reiniciar el servicio nginx para aplicar los cambios
+    ansible.builtin.service:
+      name: nginx
+      state: restarted
+
+  - name: Verificar nuevo certificado
+    ansible.builtin.command: openssl x509 -in /etc/pki/tls/certs/nginx-selfsigned.crt -noout -text
+    register: updated_cert
+    ignore_errors: true
+
+  - name: Informar de la actualización de certificados
+    ansible.builtin.debug:
+      msg: "Los certificados han sido actualizados y nginx ha sido reiniciado."
