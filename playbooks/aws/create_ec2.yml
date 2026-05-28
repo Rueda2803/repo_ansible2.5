@@ -20,9 +20,9 @@
       wait: true
     register: ec2      
 
-  - name: Esperar 5 minutos para asegurar que la instancia esté completamente lista
+  - name: Esperar 4 minutos para asegurar que la instancia esté completamente lista
     ansible.builtin.pause:
-      minutes: 5                   
+      minutes: 4                   
 
   - name: Instances ID
     debug:
