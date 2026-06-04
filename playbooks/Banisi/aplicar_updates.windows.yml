@@ -5,4 +5,4 @@
   - name: Install only particular updates based on the KB numbers
     ansible.windows.win_updates:
       category_names: '*'
-      accept_list: {{ kb_numbers }}
+      accept_list: "{{ kb_numbers }}"
