@@ -2,12 +2,9 @@
 - name: Verificación y Actualización de Sistema en Red Hat
   hosts: all
   vars:
-    # Ruta del log. Por defecto se guardará en la máquina donde corres Ansible
     log_path: "/tmp/logs_actualizaciones"
-
   tasks:
-
-  - name: Verificar actualizaciones pendientes (Simulación)
+  - name: Verificar actualizaciones pendientes 
     ansible.builtin.dnf:
       list: updates
     register: dnf_updates
@@ -15,23 +12,9 @@
   - name: Guardar el reporte de actualizaciones en un archivo de log
     delegate_to: localhost
     become: false
-    ansible.builtin.copy:
-      content: |
-        ==================================================
-        REPORTE DE ACTUALIZACIONES PENDIENTES
-        Servidor: {{ inventory_hostname }}
-        Fecha: {{ ansible_date_time.date }} {{ ansible_date_time.time }}
-        ==================================================
-        {% if dnf_updates.results | length > 0 %}
-        {% for package in dnf_updates.results %}
-        - {{ package.name }} (Versión: {{ package.version }}-{{ package.release }})
-        {% endfor %}
-        {% else %}
-        No hay actualizaciones pendientes.
-        {% endif %}
+    ansible.builtin.template:
+      src: updates_templates.j2
       dest: "{{ log_path }}/updates_{{ inventory_hostname }}_{{ ansible_date_time.date }}.log"
-      mode: '0644'
-
   - name: Actualizar todos los paquetes
     ansible.builtin.dnf:
      name: "*"
