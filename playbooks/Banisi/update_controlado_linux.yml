@@ -3,7 +3,7 @@
   hosts: all
   vars:
     # Ruta del log. Por defecto se guardará en la máquina donde corres Ansible
-    log_path: "./logs_actualizaciones"
+    log_path: "/tmp/logs_actualizaciones"
 
   tasks:
 
