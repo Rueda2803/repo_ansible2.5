@@ -4,7 +4,7 @@
   vars:
     log_path: "/tmp/logs_actualizaciones"
   tasks:
-    - name: 1. Verificar actualizaciones pendientes (Simulación)
+    - name: Verificar actualizaciones pendientes (Simulación)
       ansible.windows.win_updates:
         state: searched
       register: win_updates
