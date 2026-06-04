@@ -1,0 +1,12 @@
+==================================================
+REPORTE DE ACTUALIZACIONES PENDIENTES (WINDOWS)
+Servidor: {{ inventory_hostname }}
+Fecha: {{ ansible_date_time.date }} {{ ansible_date_time.time }}
+==================================================
+{% if win_updates.updates | length > 0 %}
+{% for k, update in win_updates.updates.items() %}
+- {{ update.title }} (Categoría: {{ update.categories | join(', ') }})
+{% endfor %}
+{% else %}
+No hay actualizaciones pendientes.
+{% endif %}

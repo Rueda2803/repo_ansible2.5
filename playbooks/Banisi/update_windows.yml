@@ -13,5 +13,5 @@
       delegate_to: localhost
       become: false
       ansible.builtin.template:
-        src: updates_templates.j2
+        src: windows_template.j2
         dest: "{{ log_path }}/updates_{{ inventory_hostname }}_{{ ansible_date_time.date }}.log"
