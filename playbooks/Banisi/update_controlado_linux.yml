@@ -7,14 +7,6 @@
 
   tasks:
 
-  - name: 1. Crear el directorio de logs local si no existe
-    delegate_to: localhost
-    become: false
-    ansible.builtin.file:
-      path: "{{ log_path }}"
-      state: directory
-      mode: '0755'
-
   - name: 2. Verificar actualizaciones pendientes (Simulación)
     ansible.builtin.dnf:
       list: updates
