@@ -4,24 +4,24 @@
   vars:
     log_path: "/tmp/logs_actualizaciones"
   tasks:
-  - name: Verificar actualizaciones pendientes 
-    ansible.builtin.dnf:
-      list: updates
-    register: dnf_updates
+    - name: Verificar actualizaciones pendientes 
+      ansible.builtin.dnf:
+        list: updates
+      register: dnf_updates
 
-  - name: Guardar el reporte de actualizaciones en un archivo de log
-    delegate_to: localhost
-    become: false
-    ansible.builtin.template:
-      src: updates_templates.j2
-      dest: "{{ log_path }}/updates_{{ inventory_hostname }}_{{ ansible_date_time.date }}.log"
-  - name: Actualizar todos los paquetes
-    ansible.builtin.dnf:
-     name: "*"
-     state: latest
-     update_cache: true
-     exclude: kernel*
+    - name: Guardar el reporte de actualizaciones en un archivo de log
+      delegate_to: localhost
+      become: false
+      ansible.builtin.template:
+        src: updates_templates.j2
+        dest: "{{ log_path }}/updates_{{ inventory_hostname }}_{{ ansible_date_time.date }}.log"
+    - name: Actualizar todos los paquetes
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+        update_cache: true
+        exclude: kernel*
 
-  - name: Informar de la actualización
-    ansible.builtin.debug:
-     msg: "Todos los paquetes han sido actualizados a la última versión disponible."
+    - name: Informar de la actualización
+      ansible.builtin.debug:
+        msg: "Todos los paquetes han sido actualizados a la última versión disponible excepto los relacionados con el kernel."

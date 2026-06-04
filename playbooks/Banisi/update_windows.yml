@@ -1,19 +1,17 @@
 ---
 - name: Actualización de servidores Windows
   hosts: all
+  vars:
+    log_path: "/tmp/logs_actualizaciones"
   tasks:
-  - name: Instalar actualizaciones de Windows
-    win_updates:
-      category_names:
-      - Critical Updates
-      - Security Updates
-      state: installed
-    register: update_result
+    - name: 1. Verificar actualizaciones pendientes (Simulación)
+      ansible.windows.win_updates:
+        state: searched
+      register: win_updates
 
-  - name: Informar actualizaciones aplicadas
-    debug:
-      msg: "Se han aplicado {{ update_result.installed_updates_count }} actualizaciones en {{ inventory_hostname }}"
-
-  - name: Actualizaciones aplicadas
-    debug:
-      var: "Se aplicaron las siguientes actualizaciones en {{ inventory_hostname }}: {{ update_result.title }}"
+    - name: Guardar el reporte de actualizaciones en un archivo de log
+      delegate_to: localhost
+      become: false
+      ansible.builtin.template:
+        src: updates_templates.j2
+        dest: "{{ log_path }}/updates_{{ inventory_hostname }}_{{ ansible_date_time.date }}.log"
