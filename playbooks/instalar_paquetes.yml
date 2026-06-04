@@ -27,3 +27,14 @@
           - bind-utils
           - nmap
         state: absent
+
+    - name: Enviar correo de notificación desde el Playbook
+      community.general.mail:
+        host: localhost
+        port: 1025
+        secure: never
+        from: alankew
+        to: administrador@tuempresa.local
+        subject: "Reporte de ejecución de Ansible"
+        body: "El playbook se ha ejecutado correctamente en el entorno de pruebas."
+      delegate_to: localhost

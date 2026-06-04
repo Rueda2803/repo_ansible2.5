@@ -3,15 +3,15 @@
   hosts: all
   become: true
   gather_facts: true
-
   tasks:
-  - name: Actualizar todos los paquetes 
-    ansible.builtin.yum:
-      name: "*"
-      state: latest
-      update_cache: true
+    - name: Actualizar todos los paquetes 
+      ansible.builtin.yum:
+       name: "*"
+       state: latest
+       update_cache: true
+       exclude: kernel* 
 
-  - name: Informar de la actualización
-    ansible.builtin.debug:
-      msg: "Todos los paquetes han sido actualizados a la última versión disponible."
+    - name: Informar de la actualización
+      ansible.builtin.debug:
+       msg: "Todos los paquetes han sido actualizados a la última versión disponible."
 
