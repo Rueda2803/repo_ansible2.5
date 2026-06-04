@@ -1,13 +1,12 @@
-        ==================================================
-        REPORTE DE ACTUALIZACIONES PENDIENTES
-        Servidor: {{ inventory_hostname }}
-        Fecha: {{ ansible_date_time.date }} {{ ansible_date_time.time }}
-        ==================================================
-        {% if dnf_updates.results | length > 0 %}
-        {% for package in dnf_updates.results %}
-        - {{ package.name }} (Versión: {{ package.version }}-{{ package.release }})
-        {% endfor %}
-        {% else %}
-        No hay actualizaciones pendientes.
-        {% endif %}
-        
+==================================================
+REPORTE DE ACTUALIZACIONES PENDIENTES
+Servidor: {{ inventory_hostname }}
+Fecha: {{ ansible_date_time.date }} {{ ansible_date_time.time }}
+==================================================
+{% if dnf_updates.results | length > 0 %}
+{% for package in dnf_updates.results %}
+- {{ package.name }} (Versión: {{ package.version }}-{{ package.release }})
+{% endfor %}
+{% else %}
+No hay actualizaciones pendientes.
+{% endif %}
