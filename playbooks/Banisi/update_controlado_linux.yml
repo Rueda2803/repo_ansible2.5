@@ -20,6 +20,8 @@
         state: latest
         update_cache: true
         disablerepo: "*"
+        enablerepo: "{{ item.repo }}"
+      loop: "{{ repos }}"
     
     - name: Informar de la actualización
       ansible.builtin.debug:
