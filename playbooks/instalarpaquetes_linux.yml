@@ -1,0 +1,39 @@
+---
+- name: Instalar paquetes en Linux
+  hosts: all
+  tasks:
+  - name: Instalar paquetes necesarios
+    ansible.builtin.dnf:
+      name:
+        - git
+        - curl
+        - vim
+      state: present
+
+  - name: Verificar la instalación de los paquetes
+    ansible.builtin.shell: "rpm -q git curl vim"
+    register: result
+
+  - name: Mostrar el resultado de la verificación
+    ansible.builtin.debug:
+      msg: "{{ result.stdout_lines }}"
+
+  - name: Mostrar recursos del equipo por medio de facts
+    ansible.builtin.debug:
+      var: ansible_facts
+
+  - name: Mostrar la versión del sistema operativo
+    ansible.builtin.debug:
+      msg: "La versión del sistema operativo es: {{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_version'] }}"
+
+  - name: Instalar bajo una condicion
+    ansible.builtin.dnf:
+      name: htop
+      state: present
+    when: ansible_facts['distribution'] == 'Fedora'
+
+  - name: Instalar bajo dos condiciones
+    ansible.builtin.dnf:
+      name: htop
+      state: present
+    when: ansible_facts['distribution'] == 'Fedora' and ansible_facts['distribution_version'] | version_compare('30', '>=')

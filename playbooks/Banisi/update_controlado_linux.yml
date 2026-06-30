@@ -20,8 +20,8 @@
         name: "*"
         state: latest
         update_cache: true
-        exclude: kernel*
-
+        disablerepo: "*"
+    
     - name: Informar de la actualización
       ansible.builtin.debug:
         msg: "Todos los paquetes han sido actualizados a la última versión disponible excepto los relacionados con el kernel."
