@@ -20,7 +20,7 @@
         state: latest
         update_cache: true
         disablerepo: "*"
-        enablerepo: "{{ item.repo }}"
+        enablerepo: "{{ item }}"
       loop: "{{ repos }}"
     
     - name: Informar de la actualización
