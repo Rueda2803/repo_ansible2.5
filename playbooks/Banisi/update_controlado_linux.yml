@@ -9,6 +9,11 @@
       ansible.builtin.dnf:
         list: updates
       register: dnf_updates
+
+    - name: Ver los repositorios habilitados
+      ansible.builtin.dnf:
+        list: repos
+      register: dnf_repos
     - name: Actualizar todos los paquetes
       ansible.builtin.dnf:
         name: "*"
