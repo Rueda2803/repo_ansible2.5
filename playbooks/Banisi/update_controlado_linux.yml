@@ -1,6 +1,7 @@
 ---
 - name: Verificación y Actualización de Sistema en Red Hat
   hosts: all
+  become: true
   vars:
     log_path: "/tmp/logs_actualizaciones"
   tasks:
