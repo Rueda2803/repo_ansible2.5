@@ -8,13 +8,6 @@
       ansible.builtin.dnf:
         list: updates
       register: dnf_updates
-
-    - name: Guardar el reporte de actualizaciones en un archivo de log
-      delegate_to: localhost
-      become: false
-      ansible.builtin.template:
-        src: updates_templates.j2
-        dest: "{{ log_path }}/updates_{{ inventory_hostname }}_{{ ansible_date_time.date }}.log"
     - name: Actualizar todos los paquetes
       ansible.builtin.dnf:
         name: "*"
