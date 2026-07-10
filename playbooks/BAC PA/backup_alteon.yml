@@ -1,0 +1,25 @@
+---
+- name: Backup de Radware Alteon vía Shell
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Ejecutar backup enviando respuestas por stream de texto
+      ansible.builtin.shell: |
+        ssh -o StrictHostKeyChecking=no -T cesar.figueroar@{{ alteon_ip }} <<EOF
+        /cfg/ptcfg
+        10.58.154.85
+        /ifs/data/prodcpp/AUTORIZACIONES/ALTEON/BAckupejemplo7726.tgz
+        root
+        password
+        n
+        
+
+        exit
+        EOF
+      register: shell_output
+      # Añadimos un flag para ignorar errores si el Alteon cierra abruptamente la conexión al terminar
+      ignore_errors: true 
+
+    - name: Mostrar lo que ocurrió en la consola
+      ansible.builtin.debug:
+        var: shell_output.stdout_lines
