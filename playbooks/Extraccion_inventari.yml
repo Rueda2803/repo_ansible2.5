@@ -2,7 +2,6 @@
 - name: Consultar API de AAP y extraer nombres de Host e Inventario
   hosts: localhost
   gather_facts: false
-  
   vars:
     # Configura aquí los datos de tu entorno o pásalos como variables extra
     aap_url: "https://129.213.33.34"
@@ -28,5 +27,5 @@
           {% for item in (api_response.content | from_json).results %}
           Inventario: {{ item.summary_fields.inventory.name }} -> Host: {{ item.name }} -> ip: {{ item.variables }}
           {% endfor %}
-        dest: "/tmp/inventario_hosts.txt"
+        dest: "/home/inventario_hosts.txt"
         mode: '0644'
