@@ -24,7 +24,7 @@
 
     - name: Mostrar el Nombre del Inventario y del Host procesados
       ansible.builtin.debug:
-        msg: "Inventario: {{ item.summary_fields.inventory.name }} -> Host: {{ item.name }}"
+        msg: "Inventario: {{ item.summary_fields.inventory.name }} -> Host: {{ item.name }} -> IP: {{ item.variables }}"
       loop: "{{ (api_response.content | from_json).results }}"
       loop_control:
         label: "{{ item.name }}" # Limpia la salida en la terminal para mostrar solo el nombre del host en el loop
