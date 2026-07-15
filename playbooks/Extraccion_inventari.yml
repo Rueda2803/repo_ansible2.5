@@ -24,9 +24,9 @@
 
     - name: Crear archivo TXT con el formato de Inventario y Hosts
       ansible.builtin.copy:
-      content: |
-        {% for item in (api_response.content | from_json).results %}
-        Inventario: {{ item.summary_fields.inventory.name }} -> Host: {{ item.name }} -> ip: {{ item.variables }}
-        {% endfor %}
-      dest: "/tmp/inventario_hosts.txt"
-      mode: '0644'
+        content: |
+          {% for item in (api_response.content | from_json).results %}
+          Inventario: {{ item.summary_fields.inventory.name }} -> Host: {{ item.name }} -> ip: {{ item.variables }}
+          {% endfor %}
+        dest: "/tmp/inventario_hosts.txt"
+        mode: '0644'
