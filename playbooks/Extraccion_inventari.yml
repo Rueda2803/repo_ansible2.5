@@ -1,0 +1,30 @@
+---
+- name: Consultar API de AAP y extraer nombres de Host e Inventario
+  hosts: localhost
+  gather_facts: false
+  
+  vars:
+    # Configura aquí los datos de tu entorno o pásalos como variables extra
+    aap_url: "https://129.213.33.34"
+    aap_user: "admin"
+    aap_password: "pass"
+
+  tasks:
+    - name: Realizar consulta GET al endpoint de hosts
+      ansible.builtin.uri:
+        url: "{{ aap_url }}/api/controller/v2/hosts/"
+        method: GET
+        user: "{{ aap_user }}"
+        password: "{{ aap_password }}"
+        force_basic_auth: true
+        status_code: 200
+        validate_certs: false  # Cambia a true si usas certificados válidos
+        return_content: true
+      register: api_response
+
+    - name: Mostrar el Nombre del Inventario y del Host procesados
+      ansible.builtin.debug:
+        msg: "Inventario: {{ item.summary_fields.inventory.name }} -> Host: {{ item.name }}"
+      loop: "{{ (api_response.content | from_json).results }}"
+      loop_control:
+        label: "{{ item.name }}" # Limpia la salida en la terminal para mostrar solo el nombre del host en el loop

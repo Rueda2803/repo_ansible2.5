@@ -1,8 +1,0 @@
----
-- name: Playbook demostracion de hola mundo
-  hosts: localhost
-  gather_facts: false
-  tasks:
-  - name: Mostrar mensaje de hola mundo
-    ansible.builtin.debug:
-      msg: "Hola mundo desde Ansible"
