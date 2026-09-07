@@ -5,10 +5,18 @@
   vars:
     log_path: "/tmp/"
   tasks:
+    - name: Informar que se va a iniciar la verificación de actualizaciones
+      ansible.builtin.debug:
+        msg: "Iniciando la verificación de actualizaciones en el servidor {{ inventory_hostname }}."
+
     - name: Verificar paquetes actuales 
       ansible.builtin.dnf:
         list: installed
       register: paquetes_actuales
+
+    - name: Informar que se guardará el reporte de paquetes actuales en un archivo de log
+      ansible.builtin.debug:
+        msg: "Guardando el reporte de paquetes actuales en {{ log_path }}/actuales_{{ inventory_hostname }}_{{ ansible_date_time.date }}.log"
 
     - name: Guardar el reporte de actualizaciones en un archivo de log
       delegate_to: localhost
@@ -17,11 +25,30 @@
         src: paquetes_actuales_template.j2
         dest: "{{ log_path }}/actuales_{{ inventory_hostname }}_{{ ansible_date_time.date }}.log"
 
+    - name: Informar que se va a iniciar la actualización de paquetes
+      ansible.builtin.debug:
+        msg: "Iniciando la actualización de paquetes en el servidor {{ inventory_hostname }}."
+
     - name: Actualizar todos los paquetes
       ansible.builtin.dnf:
         name: "*"
         state: latest
         update_cache: true
+
+    - name: Informar que se reiniciará el servidor Linux después de la actualización
+      ansible.builtin.debug:
+        msg: "Reiniciando el servidor {{ inventory_hostname }} después de la actualización."
+
+    - name: Reiniciar el servidor Linux
+      ansible.builtin.reboot:
+        connect_timeout: 5
+        reboot_timeout: 300
+        post_reboot_delay: 15
+        test_command: uptime
+
+    - name: Informar que se va a verificar los paquetes actualizados
+      ansible.builtin.debug:
+        msg: "Verificando los paquetes actualizados en el servidor {{ inventory_hostname }}."
 
     - name: Verificar paquetes actualizados 
       ansible.builtin.dnf:
@@ -35,13 +62,6 @@
         src: updates_templates.j2
         dest: "{{ log_path }}/updates_{{ inventory_hostname }}_{{ ansible_date_time.date }}.log"
 
-    - name: Reiniciar el servidor Linux
-      ansible.builtin.reboot:
-        connect_timeout: 5
-        reboot_timeout: 300
-        post_reboot_delay: 15
-        test_command: uptime
-    
     - name: Informar de la actualización
       ansible.builtin.debug:
         msg: "Todos los paquetes han sido actualizados a la última versión disponible."
