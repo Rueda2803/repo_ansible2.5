@@ -4,6 +4,10 @@
   connection: local
   gather_facts: no
   tasks:
+  - name: Informar que se va a crear una instancia EC2 en AWS
+    ansible.builtin.debug:
+      msg: "Creando una instancia EC2 en AWS con el nombre {{ amazon_ec2_name }}."
+
   - name: Create a EC2 instance
     amazon.aws.ec2_instance:
       name: "{{ amazon_ec2_name }}"
@@ -19,6 +23,10 @@
       state: running
       wait: true
     register: ec2      
+
+  - name: Informar que se esperara 4 minutos para asegurar que la instancia esté completamente lista
+    ansible.builtin.debug:
+      msg: "Esperando 4 minutos para asegurar que la instancia esté completamente lista."
 
   - name: Esperar 4 minutos para asegurar que la instancia esté completamente lista
     ansible.builtin.pause:

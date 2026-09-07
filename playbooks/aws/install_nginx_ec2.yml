@@ -3,27 +3,48 @@
   hosts: "{{ instance_name }}"
   become: true
   tasks:
+
+    - name: Informar que se va a iniciar la instalación de nginx
+      ansible.builtin.debug:
+        msg: "Iniciando la instalación de nginx en el servidor {{ inventory_hostname }}."
     - name: Actualizar el caché de apt y hacer upgrade de todos los paquetes
       ansible.builtin.apt:
         update_cache: true
         upgrade: dist 
         cache_valid_time: 3600 
+
+    - name: Informar que se va a instalar nginx
+      ansible.builtin.debug:
+        msg: "Instalando nginx en el servidor {{ inventory_hostname }}."
+
     - name: Instalar nginx
       ansible.builtin.apt:
         name: nginx
         state: present
       ignore_errors: true
 
+    - name: Informar que se va a iniciar el servicio nginx
+      ansible.builtin.debug:
+        msg: "Iniciando el servicio nginx en el servidor {{ inventory_hostname }}."
+
     - name: Inicar servicio nginx
       ansible.builtin.service:
         name: nginx
         state: started
+
+    - name: Informar que se va a configurar nginx para servir una página web personalizada
+      ansible.builtin.debug:
+        msg: "Configurando nginx para servir una página web personalizada en el servidor {{ inventory_hostname }}."
 
     - name: Configurar nginx para servir una página web personalizada
       ansible.builtin.copy:
         src: index.html
         dest: /var/www/html/index.html
       ignore_errors: true
+
+    - name: Informar que se va a reiniciar nginx para aplicar cambios
+      ansible.builtin.debug:
+        msg: "Reiniciando nginx para aplicar cambios en el servidor {{ inventory_hostname }}."
 
     - name: Reiniciar nginx para aplicar cambios
       ansible.builtin.service:
