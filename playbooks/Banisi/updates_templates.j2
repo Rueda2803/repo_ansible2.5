@@ -3,8 +3,8 @@ REPORTE DE ACTUALIZACIONES PENDIENTES
 Servidor: {{ inventory_hostname }}
 Fecha: {{ ansible_date_time.date }} {{ ansible_date_time.time }}
 ==================================================
-{% if dnf_updates.results | length > 0 %}
-{% for package in dnf_updates.results %}
+{% if paquetes_a_actualizar.results | length > 0 %}
+{% for package in paquetes_a_actualizar.results %}
 - {{ package.name }} (Versión: {{ package.version }}-{{ package.release }})
 {% endfor %}
 {% else %}
