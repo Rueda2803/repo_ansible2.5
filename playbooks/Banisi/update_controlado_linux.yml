@@ -15,7 +15,7 @@
       become: false
       ansible.builtin.template:
         src: paquetes_actuales_template.j2
-        dest: "{{ log_path }}/updates_{{ inventory_hostname }}_{{ ansible_date_time.date }}.log"
+        dest: "{{ log_path }}/actuales_{{ inventory_hostname }}_{{ ansible_date_time.date }}.log"
 
     - name: Actualizar todos los paquetes
       ansible.builtin.dnf:
