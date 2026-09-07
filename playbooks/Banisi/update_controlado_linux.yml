@@ -3,23 +3,18 @@
   hosts: all
   become: true
   vars:
-    log_path: "/tmp/logs_actualizaciones"
+    log_path: "/home/logs_actualizaciones_linux"
   tasks:
     - name: Verificar paquetes actuales 
       ansible.builtin.dnf:
-        state: installed
+        list: installed
       register: paquetes_actuales
-
-    - name: Verificación de paquetes a actualizar
-      ansible.builtin.dnf:
-        list: updates
-      register: paquetes_a_actualizar    
 
     - name: Guardar el reporte de actualizaciones en un archivo de log
       delegate_to: localhost
       become: false
       ansible.builtin.template:
-        src: updates_templates.j2
+        src: paquetes_actuales_template.j2
         dest: "{{ log_path }}/updates_{{ inventory_hostname }}_{{ ansible_date_time.date }}.log"
 
     - name: Actualizar todos los paquetes
@@ -27,6 +22,18 @@
         name: "*"
         state: latest
         update_cache: true
+
+    - name: Verificar paquetes actualizados 
+      ansible.builtin.dnf:
+        list: installed
+      register: paquetes_a_actualizar   
+
+    - name: Guardar el reporte de actualizaciones en un archivo de log
+      delegate_to: localhost
+      become: false
+      ansible.builtin.template:
+        src: updates_templates.j2
+        dest: "{{ log_path }}/updates_{{ inventory_hostname }}_{{ ansible_date_time.date }}.log"
     
     - name: Informar de la actualización
       ansible.builtin.debug:

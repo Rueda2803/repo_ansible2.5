@@ -1,0 +1,12 @@
+==================================================
+REPORTE DE PAQUETES ACTUALES
+Servidor: {{ inventory_hostname }}
+Fecha: {{ ansible_date_time.date }} {{ ansible_date_time.time }}
+==================================================
+{% if paquetes_actuales.results | length > 0 %}
+{% for package in paquetes_actuales.results %}
+- {{ package.name }} (Versión: {{ package.version }}-{{ package.release }})
+{% endfor %}
+{% else %}
+No hay paquetes instalados.
+{% endif %}
