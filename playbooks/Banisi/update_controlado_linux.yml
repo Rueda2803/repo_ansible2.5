@@ -34,7 +34,14 @@
       ansible.builtin.template:
         src: updates_templates.j2
         dest: "{{ log_path }}/updates_{{ inventory_hostname }}_{{ ansible_date_time.date }}.log"
+
+    - name: Reiniciar el servidor Linux
+      ansible.builtin.reboot:
+        connect_timeout: 5
+        reboot_timeout: 300
+        post_reboot_delay: 15
+        test_command: uptime
     
     - name: Informar de la actualización
       ansible.builtin.debug:
-        msg: "Todos los paquetes han sido actualizados a la última versión disponible excepto los relacionados con el kernel."
+        msg: "Todos los paquetes han sido actualizados a la última versión disponible."
