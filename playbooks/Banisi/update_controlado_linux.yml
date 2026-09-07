@@ -3,7 +3,7 @@
   hosts: all
   become: true
   vars:
-    log_path: "/home/logs_actualizaciones_linux"
+    log_path: "/tmp/"
   tasks:
     - name: Verificar paquetes actuales 
       ansible.builtin.dnf:
