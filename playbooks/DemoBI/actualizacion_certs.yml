@@ -5,19 +5,35 @@
   gather_facts: true
 
   tasks:
+  - name: Informar que se va a verificar el certificado actual
+    ansible.builtin.debug:
+      msg: "Verificando el certificado actual en el servidor {{ inventory_hostname }}."
+
   - name: Verificar antiguo certificado
     ansible.builtin.command: openssl x509 -in /etc/pki/tls/certs/nginx-selfsigned.crt -text -noout
     register: old_cert
     ignore_errors: true
 
+  - name: Informar que se va a generar un nuevo certificado
+    ansible.builtin.debug:
+      msg: "Generando un nuevo certificado en el servidor {{ inventory_hostname }}."
+
   - name: Generar nuevo certificado (simulado)
     ansible.builtin.command: openssl req -x509 -nodes -days 365 -newkey rsa:2048 \ -keyout /etc/pki/tls/private/nginx-selfsigned.key \ -out /etc/pki/tls/certs/nginx-selfsigned.crt \ -subj "/C=MX/ST=CDMX/L=CDMX/O=MiEmpresa/OU=IT/CN=150.136.176.185"
     register: new_cert
+
+  - name: Informar que se va a reiniciar el servicio nginx para aplicar los cambios
+    ansible.builtin.debug:
+      msg: "Reiniciando el servicio nginx en el servidor {{ inventory_hostname }} para aplicar los cambios."
 
   - name: Reiniciar el servicio nginx para aplicar los cambios
     ansible.builtin.service:
       name: nginx
       state: restarted
+
+  - name: Informar que se va a verificar el nuevo certificado
+    ansible.builtin.debug:
+      msg: "Verificando el nuevo certificado en el servidor {{ inventory_hostname }}."
 
   - name: Verificar nuevo certificado
     ansible.builtin.command: openssl x509 -in /etc/pki/tls/certs/nginx-selfsigned.crt -noout -text
