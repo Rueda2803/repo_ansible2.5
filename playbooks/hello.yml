@@ -2,14 +2,9 @@
 - name: Hello World Playbook
   hosts: localhost
   connection: local
-  vars:
-    prueba: "Hola, Mundo Nuevo!"
   tasks:
     - name: Print Hello World
       ansible.builtin.debug:
-        msg: "{{ prueba }}"
+        msg: "{{ template }}"
 
-    - name: Pasar la IP pública al Workflow de AAP
-      ansible.builtin.set_stats:
-        data:
-          mensaje_nodo1: "{{ prueba }}"
+
