@@ -1,34 +1,13 @@
 ---
-- name: Obtener usuarios de Active Directory y generar Excel
+- name: Obtener la información de usuarios en Active Directory
   hosts: all
   gather_facts: false
   tasks:
-    - name: Exportar usuarios de Active Directory
-      ansible.windows.win_shell: |
-        Import-Module ActiveDirectory
-        Import-Module ImportExcel
+    - name: Verificación de usuarios en AD
+      win_shell: |
+        Get-ADUser -Filter * | Select-Object -ExpandProperty SamAccountName
+      register: users_info
 
-        $usuarios = Get-ADUser -Filter * -Properties `
-          EmailAddress, `
-          Department, `
-          Title, `
-          LastLogonDate |
-          Select-Object `
-            Name,
-            SamAccountName,
-            Enabled,
-            EmailAddress,
-            Department,
-            Title,
-            LastLogonDate
-
-        $usuarios | Export-Excel `
-          -Path "C:\Temp\usuarios_AD.xlsx" `
-          -WorksheetName "Usuarios" `
-          -AutoSize `
-          -AutoFilter
-      register: resultado_excel
-
-    - name: Mostrar resultado
+    - name: Mostrar la información de los usuarios
       ansible.builtin.debug:
-        var: resultado_excel
+        var: users_info.stdout_lines
