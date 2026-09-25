@@ -1,10 +1,13 @@
 ---
-- name: Exportar usuarios de Active Directory a Excel
+- name: Obtener usuarios de Active Directory y generar Excel
   hosts: all
   gather_facts: false
   tasks:
-    - name: Obtener usuarios de Active Directory y generar Excel
+    - name: Exportar usuarios de Active Directory
       ansible.windows.win_shell: |
+        Import-Module ActiveDirectory
+        Import-Module ImportExcel
+
         $usuarios = Get-ADUser -Filter * -Properties `
           EmailAddress, `
           Department, `
@@ -24,12 +27,8 @@
           -WorksheetName "Usuarios" `
           -AutoSize `
           -AutoFilter
-
-    - name: Verificar que el archivo fue creado
-      ansible.windows.win_stat:
-        path: C:\Temp\usuarios_AD.xlsx
-      register: excel_file
+      register: resultado_excel
 
     - name: Mostrar resultado
       ansible.builtin.debug:
-        msg: "Archivo creado: {{ excel_file.stat.exists }}"
+        var: resultado_excel
