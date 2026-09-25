@@ -1,8 +1,7 @@
 ---
 - name: Obtener usuarios AD y generar Excel
-  hosts: windows
-  gather_facts: no
-
+  hosts: all
+  gather_facts: false
   tasks:
 
     - name: Obtener usuarios de Active Directory
