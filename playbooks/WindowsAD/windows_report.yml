@@ -1,13 +1,35 @@
 ---
-- name: Obtener la información de usuarios en Active Directory
+- name: Exportar usuarios de Active Directory a Excel
   hosts: all
   gather_facts: false
   tasks:
-    - name: Verificación de usuarios en AD
-      win_shell: |
-        Get-ADUser -Filter * | Select-Object -ExpandProperty SamAccountName
-      register: users_info
+    - name: Obtener usuarios de Active Directory y generar Excel
+      ansible.windows.win_shell: |
+        $usuarios = Get-ADUser -Filter * -Properties `
+          EmailAddress, `
+          Department, `
+          Title, `
+          LastLogonDate |
+          Select-Object `
+            Name,
+            SamAccountName,
+            Enabled,
+            EmailAddress,
+            Department,
+            Title,
+            LastLogonDate
 
-    - name: Mostrar la información de los usuarios
+        $usuarios | Export-Excel `
+          -Path "C:\Temp\usuarios_AD.xlsx" `
+          -WorksheetName "Usuarios" `
+          -AutoSize `
+          -AutoFilter
+
+    - name: Verificar que el archivo fue creado
+      ansible.windows.win_stat:
+        path: C:\Temp\usuarios_AD.xlsx
+      register: excel_file
+
+    - name: Mostrar resultado
       ansible.builtin.debug:
-        var: users_info.stdout_lines
+        msg: "Archivo creado: {{ excel_file.stat.exists }}"
