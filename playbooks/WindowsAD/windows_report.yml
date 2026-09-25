@@ -1,0 +1,13 @@
+---
+- name: Obtener la información de usuarios en Active Directory
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Verificación de usuarios en AD
+      win_shell: |
+        Get-ADUser -Filter * | Select-Object -ExpandProperty SamAccountName
+      register: users_info
+
+    - name: Mostrar la información de los usuarios
+      ansible.builtin.debug:
+        var: users_info.stdout_lines
