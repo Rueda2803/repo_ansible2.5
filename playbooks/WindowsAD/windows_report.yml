@@ -1,13 +1,75 @@
 ---
-- name: Obtener la información de usuarios en Active Directory
-  hosts: all
-  gather_facts: false
-  tasks:
-    - name: Verificación de usuarios en AD
-      win_shell: |
-        Get-ADUser -Filter * | Select-Object -ExpandProperty SamAccountName
-      register: users_info
+- name: Obtener usuarios AD y generar Excel
+  hosts: windows
+  gather_facts: no
 
-    - name: Mostrar la información de los usuarios
-      ansible.builtin.debug:
-        var: users_info.stdout_lines
+  tasks:
+
+    - name: Obtener usuarios de Active Directory
+      ansible.windows.win_shell: |
+        Get-ADUser -Filter * -Properties EmailAddress,Department,Title,LastLogonDate |
+        Select-Object Name,
+                      SamAccountName,
+                      Enabled,
+                      EmailAddress,
+                      Department,
+                      Title,
+                      LastLogonDate |
+        ConvertTo-Json -Depth 3
+      register: ad_users
+
+    - name: Convertir JSON recibido desde Windows
+      ansible.builtin.set_fact:
+        usuarios_ad: "{{ ad_users.stdout | from_json }}"
+
+    - name: Crear archivo Excel en el Execution Environment
+      delegate_to: localhost
+      ansible.builtin.shell: |
+        python3 - <<'PY'
+        import json
+        from openpyxl import Workbook
+
+        usuarios = json.loads('''{{ usuarios_ad | to_json }}''')
+
+        if isinstance(usuarios, dict):
+            usuarios = [usuarios]
+
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "Usuarios"
+
+        headers = [
+            "Name",
+            "SamAccountName",
+            "Enabled",
+            "EmailAddress",
+            "Department",
+            "Title",
+            "LastLogonDate"
+        ]
+
+        ws.append(headers)
+
+        for usuario in usuarios:
+            ws.append([
+                usuario.get("Name"),
+                usuario.get("SamAccountName"),
+                usuario.get("Enabled"),
+                usuario.get("EmailAddress"),
+                usuario.get("Department"),
+                usuario.get("Title"),
+                usuario.get("LastLogonDate")
+            ])
+
+        for column in ws.columns:
+            max_length = 0
+            column_letter = column[0].column_letter
+
+            for cell in column:
+                if cell.value is not None:
+                    max_length = max(max_length, len(str(cell.value)))
+
+            ws.column_dimensions[column_letter].width = max_length + 2
+
+        wb.save("/tmp/usuarios_AD.xlsx")
+        PY
