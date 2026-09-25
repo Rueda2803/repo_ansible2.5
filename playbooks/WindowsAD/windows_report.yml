@@ -1,23 +1,24 @@
 ---
-- name: Obtener usuarios AD y generar Excel
-  hosts: all
+- name: Obtener usuarios de Active Directory
+  hosts: windows
   gather_facts: false
   tasks:
-
-    - name: Obtener usuarios de Active Directory
+    - name: Exportar usuarios a CSV
       ansible.windows.win_shell: |
-        Get-ADUser -Filter * -Properties EmailAddress,Department,Title,LastLogonDate |
-        Select-Object Name,
-                      SamAccountName,
-                      Enabled,
-                      EmailAddress,
-                      Department,
-                      Title,
-                      LastLogonDate |
-        ConvertTo-Json -Depth 3
-      register: ad_users
-
-    - name: Convertir JSON recibido desde Windows
-      ansible.builtin.set_fact:
-        usuarios_ad: "{{ ad_users.stdout | from_json }}"
-
+        Get-ADUser -Filter * -Properties `
+          EmailAddress, `
+          Department, `
+          Title, `
+          LastLogonDate |
+          Select-Object `
+            Name,
+            SamAccountName,
+            Enabled,
+            EmailAddress,
+            Department,
+            Title,
+            LastLogonDate |
+          Export-Csv `
+            -Path "C:\Temp\usuarios_AD.csv" `
+            -NoTypeInformation `
+            -Encoding UTF8
