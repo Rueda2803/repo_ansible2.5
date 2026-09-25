@@ -1,6 +1,6 @@
 ---
 - name: Obtener usuarios de Active Directory
-  hosts: windows
+  hosts: all
   gather_facts: false
   tasks:
     - name: Exportar usuarios a CSV
@@ -22,7 +22,7 @@
             -Path "C:\Temp\usuarios_AD.csv" `
             -NoTypeInformation `
             -Encoding UTF8
-            
+
     - name: Descargar CSV desde Windows hacia AAP
       ansible.builtin.fetch:
         src: C:\Temp\usuarios_AD.csv
