@@ -26,5 +26,5 @@
     - name: Descargar CSV desde Windows hacia AAP
       ansible.builtin.fetch:
         src: C:\Temp\usuarios_AD.csv
-        dest: /home/usuarios_AD/
+        dest: /tmp/
         flat: yes
